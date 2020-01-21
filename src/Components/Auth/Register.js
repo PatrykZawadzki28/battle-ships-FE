@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import { colors } from '../../variables/styles';
+import messages from '../../constants/messages';
+import url from '../../constants/connection';
 
 const Container = styled.div`
 	width: 100vw;
 	height: 100vh;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+  flex-direction: column;
 	background-color: ${colors.primaryBackground};
 `;
 
@@ -22,6 +26,11 @@ const StyledForm = styled.form`
 	background-color: ${colors.secondaryBackground};
 `;
 
+const Header = styled.h1`
+	font-size: 5rem;
+  margin-bottom: 5rem;
+  color: ${colors.white};
+`;
 
 const StyledLabel = styled.label`
 	font-size: 2.5rem;
@@ -36,17 +45,31 @@ const StyledInput = styled.input`
 `;
 
 const InputContainer = styled.div`
-	display: flex;
+	width: 100%;
+  padding: .8rem 0;
+  display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 100%;
-	padding: .8rem 0;
 `;
 
 const StyledButton = styled.button`
-	width: 16rem;
+  width: 16rem;
+  margin: 1.2rem 0;
 	padding: .8rem;
-	font-size: 2.2rem;
+  font-size: 2rem;
+  border-radius: 3rem;
+  color: ${colors.white};
+  background-color: ${colors.primaryBackground};
+`;
+
+const ErrorMessageContainer = styled.div`
+  font-size: 2.5rem;
+	color: ${colors.error};
+`;
+
+const SuccessMessageContainer = styled.div`
+  font-size: 2.5rem;
+	color: ${colors.success};
 `;
 
 class Register extends Component {
@@ -56,7 +79,8 @@ class Register extends Component {
 		this.state = {
 			name: '',
 			password: '',
-			confirmPassword: ''
+      confirmPassword: '',
+      errorMessage: ''
 		}
 	}
 
@@ -67,15 +91,35 @@ class Register extends Component {
 		})
 	}
 
-	onSubmit = (e) => {
+	onSubmit = async (e) => {
 		e.preventDefault();
-
+    const { name, password, confirmPassword } = this.state;
+    
+    if (password !== confirmPassword) {
+      this.setState({ errorMessage: messages.PASSWORDS_NOT_MATCH, successMessage: '' });
+    } else {
+      try {
+        const response = await axios.post(url.post.REGISTER, {name, password}, url.headers);
+        console.log(response);
+        if (response.status === 200) {
+          this.setState({ 
+            successMessage: 'User created!', 
+            errorMessage: '' 
+          })
+        }
+      } catch(error) {
+        this.setState({ errorMessage: error.response?.data?.message, successMessage: '' })
+      }
+    }
 	}
 
 	render() {
-		const { name, password, confirmPassword } = this.state;
+		const { name, password, confirmPassword, errorMessage, successMessage } = this.state;
 		return (
 			<Container>
+        <Header>
+          STATKI
+        </Header>
 				<StyledForm>
 					<InputContainer>
 						<StyledLabel htmlfor="name">name </StyledLabel>
@@ -92,6 +136,8 @@ class Register extends Component {
 
 					<StyledButton onClick={this.onSubmit}>Zarejestruj się</StyledButton>
 				</StyledForm>
+        <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
+        <SuccessMessageContainer>{successMessage}</SuccessMessageContainer>
 			</Container>
 		);
 	}
