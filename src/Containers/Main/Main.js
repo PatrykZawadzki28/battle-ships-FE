@@ -31,7 +31,7 @@ class Main extends Component {
     return (
         <div style={{ textAlign: "center" }}>
           <button onClick={this.onSearchGame}>SEARCH GAME </button>
-					{room};
+					{room}
         </div>
     );
   }
