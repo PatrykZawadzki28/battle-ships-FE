@@ -6,16 +6,6 @@ import { colors } from '../../variables/styles';
 import messages from '../../constants/messages';
 import url from '../../constants/connection';
 
-const Container = styled.div`
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-  align-items: center;
-  flex-direction: column;
-	background-color: ${colors.primaryBackground};
-`;
-
 const StyledForm = styled.form`
 	width: 40rem;
 	padding: 2rem 4rem;
@@ -24,12 +14,6 @@ const StyledForm = styled.form`
 	flex-direction: column;
 	align-items: center;
 	background-color: ${colors.secondaryBackground};
-`;
-
-const Header = styled.h1`
-	font-size: 5rem;
-  margin-bottom: 5rem;
-  color: ${colors.white};
 `;
 
 const StyledLabel = styled.label`
@@ -71,7 +55,6 @@ const SuccessMessageContainer = styled.div`
   font-size: 2.5rem;
 	color: ${colors.success};
 `;
-
 class Register extends Component {
 	constructor() {
 		super();
@@ -80,7 +63,8 @@ class Register extends Component {
 			name: '',
 			password: '',
       confirmPassword: '',
-      errorMessage: ''
+      errorMessage: '',
+      successMessage: ''
 		}
 	}
 
@@ -116,10 +100,7 @@ class Register extends Component {
 	render() {
 		const { name, password, confirmPassword, errorMessage, successMessage } = this.state;
 		return (
-			<Container>
-        <Header>
-          STATKI
-        </Header>
+      <>
 				<StyledForm>
 					<InputContainer>
 						<StyledLabel htmlfor="name">name </StyledLabel>
@@ -133,12 +114,11 @@ class Register extends Component {
 						<StyledLabel htmlfor="confirmPassword">confirm password </StyledLabel>
 						<StyledInput onChange={this.onChangeValue} name="confirmPassword" type="text" value={confirmPassword} />
 					</InputContainer>
-
-					<StyledButton onClick={this.onSubmit}>Zarejestruj się</StyledButton>
+					<StyledButton onClick={this.onSubmit}>zarejestruj się</StyledButton>
 				</StyledForm>
         <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
         <SuccessMessageContainer>{successMessage}</SuccessMessageContainer>
-			</Container>
+    </>
 		);
 	}
 }
