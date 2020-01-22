@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { connect } from 'react-redux'
 
 import { colors } from '../../variables/styles';
-import messages from '../../constants/messages';
 import url from '../../constants/connection';
 
 const StyledForm = styled.form`
