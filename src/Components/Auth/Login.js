@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { connect } from 'react-redux'
+import { setAuthorization, addUserData } from '../../store/actions';
 
 import { colors } from '../../variables/styles';
 import url from '../../constants/connection';
@@ -55,7 +56,7 @@ const SuccessMessageContainer = styled.div`
   font-size: 2.5rem;
 	color: ${colors.success};
 `;
-class Register extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props);
 
@@ -80,12 +81,15 @@ class Register extends Component {
 		try {
 			const response = await axios.post(url.post.LOGIN, { name, password }, url.headers);
 			if (response.status === 200) {
+
 				this.setState({ 
 					errorMessage: '' 
 				})
-				this.props.onRouterHistory.push('/');		
+				await this.props.setAuthorization(true);
+				await this.props.addUserData(response.data.data);
+				this.props.onRouterHistory.push('/game');		
 			}
-		} catch(error) {
+		} catch (error) {
 			this.setState({ errorMessage: error.response?.data?.message, successMessage: '' })
 		}
   }
@@ -112,4 +116,13 @@ class Register extends Component {
 	}
 }
 
-export default  Register;
+const mapStateToProps = state => ({
+  isLoggedIn: state.isloggedIn
+});
+
+const mapDispatchToProps =  {
+	setAuthorization,
+	addUserData,
+};
+
+export default  connect(mapStateToProps, mapDispatchToProps)(Login);

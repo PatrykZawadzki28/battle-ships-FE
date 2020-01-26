@@ -3,4 +3,9 @@ const setAuthorization = value => ({
   value
 })
 
-export { setAuthorization };
+const addUserData = value => ({
+  type: 'ADD_USER_DATA',
+  value
+})
+
+export { setAuthorization, addUserData };
