@@ -3,9 +3,14 @@ const setAuthorization = value => ({
   value
 })
 
+const setLoading = value => ({
+  type: 'SET_LOADING',
+  value
+})
+
 const addUserData = value => ({
   type: 'ADD_USER_DATA',
   value
 })
 
-export { setAuthorization, addUserData };
+export { setAuthorization, addUserData, setLoading };

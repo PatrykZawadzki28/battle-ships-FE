@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import Register from '../../Components/Auth/Register';
 import Login from '../../Components/Auth/Login';
+import backgroundImage from '../../Img/thumb-1920-255067.png';
 
 import { colors } from '../../variables/styles';
 
@@ -14,7 +15,8 @@ const Container = styled.div`
 	justify-content: center;
   align-items: center;
   flex-direction: column;
-	background-color: ${colors.primaryBackground};
+	background: transparent url(${backgroundImage}) no-repeat padding-box;
+	background-size: cover;
 `;
 
 

@@ -2,11 +2,14 @@
 
 
 import React, { Component } from "react";
+import { Link } from 'react-router-dom'
 import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 
+import { setAuthorization } from '../../store/actions';
 import { colors } from '../../variables/styles';
+
 
 const endpoint = 'http://localhost:8081';
 const socket = socketIOClient(endpoint);
@@ -22,7 +25,13 @@ const Container = styled.div`
 	display: flex;
 	margin: 0 auto;
 	justify-content: space-between;
+	width: 100%;
 	max-width: 120rem;
+`;
+
+const ChildrenContainer = styled.div`
+	display: flex;
+	margin: 0 auto;
 `;
 
 const LeftSide = styled.div`
@@ -39,49 +48,89 @@ const RightSide = styled.div`
 	${SharedNavigationCss}
 `;
 
+const StyledLink = styled(Link)`
+	background-color: ${colors.primaryBackground};
+	padding: 1.6rem;
+	color: ${colors.white};
+	width: ${({ wide }) => wide ? '20rem' : '13rem'};
+	text-align: ${({ align }) => align ? align : 'center'};
+	text-decoration: none;
+`;
+
 const StyledButton = styled.button`
 	background-color: ${colors.primaryBackground};
 	padding: 1.6rem;
 	color: ${colors.white};
-	text-align: center;
-	${({ wide }) => wide ? 'width: 18rem' : 'width: 15rem'};
+	width: ${({ wide }) => wide ? '20rem' : '13rem'};
+	text-align: ${({ align }) => align ? align : 'center'};
+	text-decoration: none;
 `;
 
 class Main extends Component {
   constructor() {
     super();
     this.state = {
-      response: false,
-			room: ''
+			room: '',
+			gameStatus: 0
     };
 	}
 	
+	onSearchGame = () => {
+		socket.emit('searchGame');
+	}
 
+	onLeaveGame = () => {
+		const { room } = this.state;
+		socket.emit('leaveGame', room);
+	}
+
+	logout = () => {
+		this.props.setAuthorization(false);
+	}
   componentDidMount() {
     // const { endpoint } = this.state;
 		// const socket = socketIOClient(endpoint);
-		socket.on('roomName', (data) => {
-			this.setState({ room: data });
+		socket.on('roomName', ({ room, gameStatus }) => {
+			console.log(room, gameStatus);
+			this.setState({ room, gameStatus });
 		});
+		
 	}
 	
+	
   render() {
-		const { room } = this.state;
+		const { room, gameStatus } = this.state;
+		const { children } = this.props;
+		
+		if (gameStatus === 2) {
+			return (
+				<StyledButton>
+					W TRAKCIE GRY!
+				</StyledButton>
+			)
+		}
+		
     return (
+			<>
         <Container>
 					<LeftSide>
-						<StyledButton wide={true} onClick={this.onSearchGame}>Wyloguj się </StyledButton>
-						<StyledButton onClick={this.onSearchGame}>Profil </StyledButton>
+						<StyledButton align='right' wide onClick={this.logout}>Wyloguj się </StyledButton>
+						<StyledLink to='/' align='right'>Profil </StyledLink>
 					</LeftSide>
 					<Middle>
-          	<StyledButton onClick={this.onSearchGame}>SEARCH GAME </StyledButton>
+						{room}
+          	{!room && <StyledButton wide onClick={this.onSearchGame}>SEARCH GAME </StyledButton>}
+						{room && <StyledButton wide onClick={this.onLeaveGame}>LEAVE GAME </StyledButton>}
 					</Middle>
 					<RightSide>
-						<StyledButton wide={true}  onClick={this.onSearchGame}>Sklep </StyledButton>
-						<StyledButton onClick={this.onSearchGame}>Ranking </StyledButton>
+						<StyledLink to='/game/sklep' align='left' wide >Sklep </StyledLink>
+						<StyledLink to='/game/ranking' align='left' >Ranking </StyledLink>
 					</RightSide>
-					{room}
         </Container>
+				<ChildrenContainer>
+					{children}
+				</ChildrenContainer>
+			</>
     );
   }
 }
@@ -92,4 +141,8 @@ const mapStateToProps = state => ({
 	userData: state.userData
 });
 
-export default  connect(mapStateToProps)(Main);
+const mapDispatchToProps =  {
+	setAuthorization
+};
+
+export default  connect(mapStateToProps, mapDispatchToProps)(Main);
