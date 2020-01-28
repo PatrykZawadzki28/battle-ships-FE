@@ -5,6 +5,8 @@ import { colors } from '../../variables/styles';
 
 
 const Container = styled.div`
+	display: flex;
+	align-items: center;
 	max-width: 90rem;
 	height: 100%;
 `;
@@ -20,15 +22,11 @@ const RightSide = styled.div`
 `;
 
 class Profile extends Component {
-	constructor() {
-
-	}
-
 	render() {
 		return (
 			<Container>
-				<LeftSide>LOGO IMAGE</LeftSide>
-				<RightSide>PERSONAL DATA</RightSide>
+				<LeftSide>PROFIL</LeftSide>
+				<RightSide>W BUDOWIE</RightSide>
 			</Container>
 		)
 	}

@@ -7,7 +7,6 @@ import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 
-import backgroundImage from '../../Img/thumb-1920-255067.png';
 import { setAuthorization } from '../../store/actions';
 import { colors } from '../../variables/styles';
 
@@ -61,6 +60,8 @@ const StyledLink = styled(Link)`
 	width: ${({ wide }) => wide ? '20rem' : '13rem'};
 	text-align: ${({ align }) => align ? align : 'center'};
 	text-decoration: none;
+	margin-top: .6rem;
+	box-shadow: 0 .3rem .4rem 0 rgba(0,0,0,.14), 0 .1rem .8rem 0 rgba(0,0,0,.12), 0 .3rem .3rem -.2rem rgba(0,0,0,.4);
 `;
 
 const StyledButton = styled.button`
@@ -69,10 +70,18 @@ const StyledButton = styled.button`
 	width: ${({ wide }) => wide ? '20rem' : '13rem'};
 	text-align: ${({ align }) => align ? align : 'center'};
 	text-decoration: none;
+	margin-top: .6rem;
+	box-shadow: 0 .3rem .4rem 0 rgba(0,0,0,.14), 0 .1rem .8rem 0 rgba(0,0,0,.12), 0 .3rem .3rem -.2rem rgba(0,0,0,.4);
 `;
 
 const SearchButton = styled(StyledButton)`
 	margin-top: 2rem;
+`;
+
+const CoinsInfo = styled.p`
+	font-size: 1.6rem;
+	margin: 0 auto;
+	padding: 1rem;
 `;
 
 class Layout extends Component {
@@ -96,6 +105,7 @@ class Layout extends Component {
 	logout = () => {
 		this.props.setAuthorization(false);
 	}
+
   componentDidMount() {
 		socket.on('roomName', ({ room, gameStatus }) => {
 			this.setState({ room, gameStatus });
@@ -105,7 +115,7 @@ class Layout extends Component {
 	
   render() {
 		const { room, gameStatus } = this.state;
-		const { children } = this.props;
+		const { children, userData } = this.props;
 		
 		if (gameStatus === 2) {
 			return (
@@ -120,12 +130,13 @@ class Layout extends Component {
         <Container>
 					<LeftSide>
 						<StyledButton align='right' wide onClick={this.logout}>Wyloguj się </StyledButton>
-						<StyledLink to='/' align='right'>Profil </StyledLink>
+						<StyledLink to='/game/profil' align='right'>Profil </StyledLink>
 					</LeftSide>
 					<Middle>
 						{room}
           	{!room && <SearchButton wide onClick={this.onSearchGame}>SEARCH GAME </SearchButton>}
 						{room && <StyledButton wide onClick={this.onLeaveGame}>LEAVE GAME </StyledButton>}
+						<CoinsInfo>ZETONY: {userData.coins}</CoinsInfo>
 					</Middle>
 					<RightSide>
 						<StyledLink to='/game/sklep' align='left' wide >Sklep </StyledLink>

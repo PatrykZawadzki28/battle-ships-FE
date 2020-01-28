@@ -7,4 +7,8 @@ const colors = {
 	success: '#61ffb8'
 }
 
-export { colors };
+const shadow = {
+	default: '0 .3rem .4rem 0 rgba(0,0,0,.14), 0 .1rem .8rem 0 rgba(0,0,0,.12), 0 .3rem .3rem -.2rem rgba(0,0,0,.4)'
+}
+
+export { colors, shadow };

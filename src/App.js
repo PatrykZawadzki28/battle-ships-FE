@@ -15,6 +15,7 @@ import reducers from './store/reducers';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Layout from './Containers/Layout/Layout';
 import Auth from './Containers/Auth/Auth';
+import Profile from './Components/Profile/Profile';
 
 import { loadState, saveState } from './store/localStorage';
 
@@ -28,7 +29,7 @@ store.subscribe(() => {
 
 const Container = styled.div`
 	max-width: 100%;
-	height: 100vh;
+	height: 100%;
 	background-color: ${colors.secondaryBackground};
 `;
 
@@ -46,6 +47,7 @@ class App extends Component {
 									render={({ match: { url } }) => (
 										<Layout>
 											<PrivateRoute exact path={`${url}/`} component={Dashboard} />
+											<PrivateRoute path={`${url}/profil`} component={Profile} />
 											<PrivateRoute path={`${url}/sklep`} component={Shop}/>
 											<PrivateRoute path={`${url}/ranking`} component={Ranking}/>
 										</Layout>

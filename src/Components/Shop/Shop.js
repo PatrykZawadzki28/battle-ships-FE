@@ -6,13 +6,16 @@ import B from '../../Img/144-200x300.jpg';
 import C from '../../Img/509-200x200.jpg';
 import D from '../../Img/1048-200x200.jpg';
 
-import { colors } from '../../variables/styles';
+import { colors, shadow } from '../../variables/styles';
 
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	width: 100%;
 	margin: 2.6rem;
+	box-shadow: ${shadow.default};
 `;
 
 const Headers = styled.div`
@@ -30,7 +33,7 @@ const Content = styled.div`
 	flex-wrap: wrap;
 	margin: 2rem;
 	background-color: ${colors.secondaryBackground};
-	border: .1rem solid ${colors.white};
+	box-shadow: ${shadow.default};
 `;
 
 const ContentWrapper = styled.div`
@@ -62,6 +65,46 @@ const ItemButton = styled.button`
   background-color: ${colors.primaryBackground};
 `;
 
+const BuyCoinsButton = styled(ItemButton)`
+	font-size: 2rem;
+`;
+
+const CoinAmountWrapper = styled.div`
+	display: flex;
+`;
+
+const CoinContent = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	width: 9rem;
+	height: 9rem;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	margin: 2rem;
+	padding: 2rem;
+	border-radius: 50%;
+	box-shadow: ${shadow.default};
+	background-color: ${({ extraStyling }) => extraStyling && colors.success};
+`;
+
+const Coin = styled.div`
+	width: 2.4rem;
+	height: 2.4rem;
+	background: #FFE600 0% 0% no-repeat padding-box;
+	border-radius: 1.2rem;
+`;
+
+const CoinAmount = styled.div`
+	font-size: 2rem;
+	padding-left: .6rem;
+`;
+
+const CoinPrice = styled.div`
+	font-size: 2rem;
+`;
+
 const mockedData = [
 	{
 		img: A,
@@ -89,7 +132,40 @@ const mockedData = [
 	}, 
 ];
 
+const mockedCoinsData = [
+	{
+		amount: 10,
+		price: 5,
+	}, 
+	{
+		amount: 20,
+		price: 8,
+	}, 
+	{
+		amount: 40,
+		price: 15,
+	}, 
+	{
+		amount: 80,
+		price: 25
+	}, 
+];
+
 class Shop extends Component {
+	constructor() {
+		super();
+		this.state = {
+			amount: 0,
+			price: 0,
+		}
+	}
+	setBuyCoinsOption = (amount, price) => {
+		this.setState({ amount, price });
+	}
+
+	addCoins = () => {
+		
+	}
 	render() {
 		return (
 			<Container>
@@ -102,6 +178,20 @@ class Shop extends Component {
 						<ItemPrice>{price}</ItemPrice> 
 						<ItemButton>Kup teraz</ItemButton>
 					</Content>
+				))}
+				</ContentWrapper>
+				<BuyCoinsButton onClick={this.addCoins}>
+					DODAJ ZETONY
+				</BuyCoinsButton>
+				<ContentWrapper>
+				{mockedCoinsData.map(({ price, amount }, index) => (
+					<CoinContent extraStyling={price === this.state.price ? true : false} onClick={() => this.setBuyCoinsOption(amount, price)}>
+						<CoinAmountWrapper>
+							<Coin />
+							<CoinAmount>{amount}</CoinAmount>
+						</CoinAmountWrapper>
+						<CoinPrice>{price}zł</CoinPrice> 
+					</CoinContent>
 				))}
 				</ContentWrapper>
 			</Container>
