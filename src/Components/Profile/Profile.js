@@ -7,7 +7,6 @@ import { colors } from '../../variables/styles';
 const Container = styled.div`
 	max-width: 90rem;
 	height: 100%;
-	background-color: ${colors.secondaryBackground};
 `;
 
 const LeftSide = styled.div`

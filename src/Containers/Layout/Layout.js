@@ -7,6 +7,7 @@ import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 
+import backgroundImage from '../../Img/thumb-1920-255067.png';
 import { setAuthorization } from '../../store/actions';
 import { colors } from '../../variables/styles';
 
@@ -19,6 +20,12 @@ const SharedNavigationCss = `
 	display: flex;
 	flex-direction: column;
 	font-size: 3.6rem;
+`;
+
+const MainWrapper = styled.div`
+	width: 100%;
+	height: 100%;
+	background: #4d6c85;
 `;
 
 const Container = styled.div`
@@ -51,7 +58,6 @@ const RightSide = styled.div`
 const StyledLink = styled(Link)`
 	background-color: ${colors.primaryBackground};
 	padding: 1.6rem;
-	color: ${colors.white};
 	width: ${({ wide }) => wide ? '20rem' : '13rem'};
 	text-align: ${({ align }) => align ? align : 'center'};
 	text-decoration: none;
@@ -60,13 +66,16 @@ const StyledLink = styled(Link)`
 const StyledButton = styled.button`
 	background-color: ${colors.primaryBackground};
 	padding: 1.6rem;
-	color: ${colors.white};
 	width: ${({ wide }) => wide ? '20rem' : '13rem'};
 	text-align: ${({ align }) => align ? align : 'center'};
 	text-decoration: none;
 `;
 
-class Main extends Component {
+const SearchButton = styled(StyledButton)`
+	margin-top: 2rem;
+`;
+
+class Layout extends Component {
   constructor() {
     super();
     this.state = {
@@ -88,13 +97,9 @@ class Main extends Component {
 		this.props.setAuthorization(false);
 	}
   componentDidMount() {
-    // const { endpoint } = this.state;
-		// const socket = socketIOClient(endpoint);
 		socket.on('roomName', ({ room, gameStatus }) => {
-			console.log(room, gameStatus);
 			this.setState({ room, gameStatus });
 		});
-		
 	}
 	
 	
@@ -109,9 +114,9 @@ class Main extends Component {
 				</StyledButton>
 			)
 		}
-		
+
     return (
-			<>
+			<MainWrapper>
         <Container>
 					<LeftSide>
 						<StyledButton align='right' wide onClick={this.logout}>Wyloguj się </StyledButton>
@@ -119,7 +124,7 @@ class Main extends Component {
 					</LeftSide>
 					<Middle>
 						{room}
-          	{!room && <StyledButton wide onClick={this.onSearchGame}>SEARCH GAME </StyledButton>}
+          	{!room && <SearchButton wide onClick={this.onSearchGame}>SEARCH GAME </SearchButton>}
 						{room && <StyledButton wide onClick={this.onLeaveGame}>LEAVE GAME </StyledButton>}
 					</Middle>
 					<RightSide>
@@ -130,7 +135,7 @@ class Main extends Component {
 				<ChildrenContainer>
 					{children}
 				</ChildrenContainer>
-			</>
+			</MainWrapper>
     );
   }
 }
@@ -145,4 +150,4 @@ const mapDispatchToProps =  {
 	setAuthorization
 };
 
-export default  connect(mapStateToProps, mapDispatchToProps)(Main);
+export default  connect(mapStateToProps, mapDispatchToProps)(Layout);

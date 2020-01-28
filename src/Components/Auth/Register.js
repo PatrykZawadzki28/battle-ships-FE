@@ -2,58 +2,32 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import Form from './Form';
+
 import { colors } from '../../variables/styles';
 import messages from '../../constants/messages';
 import url from '../../constants/connection';
 
-const StyledForm = styled.form`
-	width: 40rem;
-	padding: 2rem 4rem;
-	border-radius: 8rem;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	background-color: ${colors.secondaryBackground};
-`;
-
-const StyledLabel = styled.label`
-	font-size: 2.5rem;
-	color: ${colors.white};
-`;
-
-const StyledInput = styled.input`
-	width: 70%;
-	padding: .8rem;
-	font-size: 1.6rem;
-	background-color: ${colors.white};
-`;
-
-const InputContainer = styled.div`
-	width: 100%;
-  padding: .8rem 0;
-  display: flex;
-	flex-direction: column;
-	align-items: center;
-`;
-
-const StyledButton = styled.button`
-  width: 16rem;
-  margin: 1.2rem 0;
-	padding: .8rem;
-  font-size: 2rem;
-  border-radius: 3rem;
-  color: ${colors.white};
-  background-color: ${colors.primaryBackground};
-`;
-
 const ErrorMessageContainer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 2rem;
   font-size: 2.5rem;
 	color: ${colors.error};
+	background-color: ${colors.primaryBackgroundTransparent};
 `;
 
 const SuccessMessageContainer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 2rem;
   font-size: 2.5rem;
 	color: ${colors.success};
+	background-color: ${colors.primaryBackgroundTransparent};
 `;
 class Register extends Component {
 	constructor() {
@@ -99,25 +73,21 @@ class Register extends Component {
 
 	render() {
 		const { name, password, confirmPassword, errorMessage, successMessage } = this.state;
+		const { onChangeStatus } = this.props;
 		return (
       <>
-				<StyledForm>
-					<InputContainer>
-						<StyledLabel htmlfor="name">name </StyledLabel>
-						<StyledInput onChange={this.onChangeValue} name="name" type="text" value={name} />
-					</InputContainer>
-					<InputContainer>
-						<StyledLabel htmlfor="password">password </StyledLabel>
-						<StyledInput onChange={this.onChangeValue} name="password" type="text" value={password} />
-					</InputContainer>
-					<InputContainer>
-						<StyledLabel htmlfor="confirmPassword">confirm password </StyledLabel>
-						<StyledInput onChange={this.onChangeValue} name="confirmPassword" type="text" value={confirmPassword} />
-					</InputContainer>
-					<StyledButton onClick={this.onSubmit}>zarejestruj się</StyledButton>
-				</StyledForm>
-        <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
-        <SuccessMessageContainer>{successMessage}</SuccessMessageContainer>
+				{errorMessage &&<ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>}
+				{successMessage && <SuccessMessageContainer>{successMessage}</SuccessMessageContainer>}
+				<Form 
+					name={name} 
+					password={password} 
+					confirmPassword={confirmPassword}
+					onChangeValue={this.onChangeValue} 
+					onSubmit={this.onSubmit}
+					onChangeStatus={onChangeStatus}
+					withConfirmPassword
+					buttonText='Zarejestruj się'
+				/>
     </>
 		);
 	}

@@ -5,28 +5,29 @@ import { colors } from '../../variables/styles';
 
 
 const Container = styled.div`
-	width: 100%;
+	max-width: 90rem;
 	height: 100%;
-	text-align: center;
 `;
 
 const Headers = styled.div`
 	padding: 2rem;
-	font-size: 5rem;
+	font-size: 3rem;
 `;
 
-class Ranking extends Component {
-	// constructor() {
+const Content = styled.div`
+	padding: 2rem;
+	font-size: 3rem;
+`;
 
-	// }
-
+class Dashboard extends Component {
 	render() {
 		return (
 			<Container>
-				<Headers>W BUDOWIE!</Headers>
+				<Headers>DASHBOARD</Headers>
+				<Content>PERSONAL DATA</Content>
 			</Container>
 		)
 	}
 }
 
-export default Ranking;
+export default Dashboard;

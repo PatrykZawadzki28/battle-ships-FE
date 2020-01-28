@@ -12,7 +12,8 @@ import { colors } from './variables/styles';
 import PrivateRoute from './routes/privateRoute';
 import reducers from './store/reducers';
 
-import Main from './Containers/Main/Main';
+import Dashboard from './Components/Dashboard/Dashboard';
+import Layout from './Containers/Layout/Layout';
 import Auth from './Containers/Auth/Auth';
 
 import { loadState, saveState } from './store/localStorage';
@@ -43,11 +44,11 @@ class App extends Component {
 								<Route
 									path="/game"
 									render={({ match: { url } }) => (
-										<Main>
-											{/* <PrivateRoute exact path={`${url}/`} component={Main} /> */}
+										<Layout>
+											<PrivateRoute exact path={`${url}/`} component={Dashboard} />
 											<PrivateRoute path={`${url}/sklep`} component={Shop}/>
 											<PrivateRoute path={`${url}/ranking`} component={Ranking}/>
-										</Main>
+										</Layout>
 									)}
 								/>				
 						</Switch>

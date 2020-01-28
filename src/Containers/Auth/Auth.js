@@ -23,20 +23,8 @@ const Container = styled.div`
 const Header = styled.h1`
 	font-size: 5rem;
   margin-bottom: 5rem;
-  color: ${colors.white};
 `;
 
-const Choosers = styled.div`
-	display: flex;
-	flex-direction: row;
-`;
-
-const Chooser = styled.p`
-	font-size: 2rem;
-	margin: 1rem 2rem;
-	cursor: pointer;
-	color: ${colors.white};
-`;
 class Auth extends Component {
 	constructor() {
 		super();
@@ -47,25 +35,20 @@ class Auth extends Component {
 		}
 	}
 
+	onChangeStatus = (status) => {
+		if (status === 'login') this.setState({ login: true, register: false  });
+		if (status === 'register') this.setState({ register: true, login: false });
+	}
 
 	render() {
 		const { login } = this.state;
-
-		const onChangeStatus = (status) => {
-			if (status === 'login') this.setState({ login: true, register: false  });
-			if (status === 'register') this.setState({ register: true, login: false });
-		}
 
 		return (
 			<Container>
 				<Header>
 					BATTLESHIPS
 				</Header>
-				<Choosers>
-					<Chooser onClick={() => onChangeStatus('login')}>login</Chooser>
-					<Chooser onClick={() => onChangeStatus('register')}>register</Chooser>
-				</Choosers>
-				{login ? <Login onRouterHistory={this.props.history} onChangeStatus={onChangeStatus} /> : <Register onChangeStatus={onChangeStatus} />}
+				{login ? <Login onChangeStatus={this.onChangeStatus} onRouterHistory={this.props.history} /> : <Register onChangeStatus={this.onChangeStatus}/>}
 			</Container>
 		);
 	}
