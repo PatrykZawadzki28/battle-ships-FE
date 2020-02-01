@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
+import { connect } from 'react-redux'
+import { setAuthorization, addUserData } from '../../store/actions';
+
+import url from '../../constants/connection';
 import A from '../../Img/72-200x200.jpg';
-import B from '../../Img/144-200x300.jpg';
-import C from '../../Img/509-200x200.jpg';
-import D from '../../Img/1048-200x200.jpg';
+// import B from '../../Img/144-200x300.jpg';
+// import C from '../../Img/509-200x200.jpg';
+// import D from '../../Img/1048-200x200.jpg';
 
 import { colors, shadow } from '../../variables/styles';
 
@@ -86,7 +91,7 @@ const CoinContent = styled.div`
 	padding: 2rem;
 	border-radius: 50%;
 	box-shadow: ${shadow.default};
-	background-color: ${({ extraStyling }) => extraStyling && colors.success};
+	background-color: ${({ extraStyling }) => extraStyling && colors.primaryBackground};
 `;
 
 const Coin = styled.div`
@@ -104,33 +109,6 @@ const CoinAmount = styled.div`
 const CoinPrice = styled.div`
 	font-size: 2rem;
 `;
-
-const mockedData = [
-	{
-		img: A,
-		name: 'Mega Pierd',
-		price: 25,
-		details: 'Wyrzuca pierdy na odległość 5km... Lepiej unikać niz próbować uciekać :) '
-	}, 
-	{
-		img: B,
-		name: 'Podwójny strzał',
-		price: 50,
-		details: 'Pozwala na zaatakowanie przeciwnika drugi raz podczas trwania twojej tury'
-	}, 
-	{
-		img: C,
-		name: 'Podwójny strzał',
-		price: 50,
-		details: 'Pozwala na zaatakowanie przeciwnika drugi raz podczas trwania twojej tury'
-	}, 
-	{
-		img: D,
-		name: 'Podwójny strzał',
-		price: 50,
-		details: 'Pozwala na zaatakowanie przeciwnika drugi raz podczas trwania twojej tury'
-	}, 
-];
 
 const mockedCoinsData = [
 	{
@@ -157,34 +135,103 @@ class Shop extends Component {
 		this.state = {
 			amount: 0,
 			price: 0,
+			items: []
 		}
 	}
 	setBuyCoinsOption = (amount, price) => {
 		this.setState({ amount, price });
 	}
 
-	addCoins = () => {
-		
+	addItems = async (name, price) => {
+		const { userData, token } = this.props;
+		console.log(userData.items);
+		// const body = JSON.stringify({
+		// 	name,
+		// 	price
+		// });
+
+		// try {
+		// 	const response = await axios.post(`${url.post.ADD_ITEM}/${userData._id}`, {
+		// 		withCredientials: true,
+		// 		headers: {
+		// 			Authorization: `${token}`
+		// 		},
+		// 		body
+		// 	});
+
+		// 	if (response.status === 200) {
+		// 		await this.props.addUserData(response.data.data);
+		// 		console.log(userData);
+		// 	}
+		// } catch (error) {
+		// 	console.log(error);
+		// }
 	}
+
+	getAllItems = async () => {
+		const { token } = this.props;
+		try {
+			const response = await axios.get(`${url.get.GET_ALL_ITEMS}`, {
+				withCredientials: true,
+				headers: {
+					Authorization: `${token}`
+				},
+			});
+			if (response.status === 200) {
+				this.setState({ items: response.data.items });
+			}
+		} catch (error) {
+			console.log(error.response);
+		}
+	}
+
+	async componentDidMount() {
+		await this.getAllItems();
+	}
+
+	addCoins = async (e) => {
+		e.preventDefault();
+		const { amount } = this.state;
+		const { userData, token } = this.props;
+		
+		try {
+			const response = await axios.post(`${url.post.ADD_COINS}?amount=${amount}&id=${userData._id}`);
+			if (response.status === 200) {
+				try {
+					const response = await axios.get(`${url.get.GET_PLAYER_DATA}/${userData._id}`, {
+						withCredientials: true,
+						headers: {
+							Authorization: `${token}`
+						}
+					});
+					await this.props.addUserData(response.data.data);
+					
+				} catch (error) {
+					console.log(error.response);
+				}
+			}
+		} catch (error) {
+			console.log(error.response);
+		}
+	}
+
 	render() {
+		const { items } = this.state;
 		return (
 			<Container>
 				<Headers>SKLEP</Headers>
 				<ContentWrapper>
-				{mockedData.map(({ img, name, price, details }) => (
+				{items.map(({ name, price }) => (
 					<Content>
-						<ItemImage img={img}/>
+						<ItemImage img={A}/>
 						<ItemName>{name}</ItemName>
 						<ItemPrice>{price}</ItemPrice> 
-						<ItemButton>Kup teraz</ItemButton>
+						<ItemButton onClick={() => this.addItems(name, price)}>Kup teraz</ItemButton>
 					</Content>
 				))}
 				</ContentWrapper>
-				<BuyCoinsButton onClick={this.addCoins}>
-					DODAJ ZETONY
-				</BuyCoinsButton>
 				<ContentWrapper>
-				{mockedCoinsData.map(({ price, amount }, index) => (
+				{mockedCoinsData.map(({ price, amount }) => (
 					<CoinContent extraStyling={price === this.state.price ? true : false} onClick={() => this.setBuyCoinsOption(amount, price)}>
 						<CoinAmountWrapper>
 							<Coin />
@@ -194,9 +241,23 @@ class Shop extends Component {
 					</CoinContent>
 				))}
 				</ContentWrapper>
+				<BuyCoinsButton onClick={this.addCoins}>
+					DODAJ ZETONY
+				</BuyCoinsButton>
 			</Container>
 		)
 	}
 }
 
-export default Shop;
+const mapStateToProps = state => ({
+	isLoggedIn: state.isloggedIn,
+	userData: state.userData,
+	token: state.token
+});
+
+const mapDispatchToProps =  {
+	setAuthorization,
+	addUserData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Shop);

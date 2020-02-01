@@ -2,6 +2,7 @@ const initialValues = {
 	isloggedIn: false,
 	isLoading: false,
 	userData: {},
+	token: ''
 }
 
 const reducers = (state = initialValues, action) => {
@@ -15,6 +16,11 @@ const reducers = (state = initialValues, action) => {
 			return {
 				...state,
 				userData: action.value
+			}
+		case 'SET_AUTH_TOKEN':
+			return {
+				...state,
+				token: action.value
 			}
 		case 'SET_LOADING':
 			return {

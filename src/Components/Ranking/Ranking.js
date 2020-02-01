@@ -16,10 +16,6 @@ const Headers = styled.div`
 `;
 
 class Ranking extends Component {
-	// constructor() {
-
-	// }
-
 	render() {
 		return (
 			<Container>

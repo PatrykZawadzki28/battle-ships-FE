@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { connect } from 'react-redux'
-import { setAuthorization, addUserData } from '../../store/actions';
+import { setAuthorization, addUserData, setAuthToken } from '../../store/actions';
 
 import Form from './Form';
 
@@ -61,6 +61,7 @@ class Login extends Component {
 					errorMessage: '' 
 				})
 				await this.props.setAuthorization(true);
+				await this.props.setAuthToken(response.data.token.token);
 				await this.props.addUserData(response.data.data);
 				this.props.onRouterHistory.push('/game');		
 			}
@@ -96,6 +97,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps =  {
 	setAuthorization,
 	addUserData,
+	setAuthToken
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

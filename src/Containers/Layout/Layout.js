@@ -7,7 +7,7 @@ import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 
-import { setAuthorization } from '../../store/actions';
+import { setAuthorization, setAuthToken } from '../../store/actions';
 import { colors } from '../../variables/styles';
 
 
@@ -104,6 +104,7 @@ class Layout extends Component {
 
 	logout = () => {
 		this.props.setAuthorization(false);
+		this.props.setAuthToken('');
 	}
 
   componentDidMount() {
@@ -158,7 +159,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps =  {
-	setAuthorization
+	setAuthorization,
+	setAuthToken
 };
 
 export default  connect(mapStateToProps, mapDispatchToProps)(Layout);

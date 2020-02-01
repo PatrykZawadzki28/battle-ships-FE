@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { colors } from '../../variables/styles';
+import { colors, shadow } from '../../variables/styles';
 
 const StyledForm = styled.form`
 	width: 40rem;
@@ -11,7 +11,7 @@ const StyledForm = styled.form`
 	flex-direction: column;
 	align-items: center;
 	background-color: ${colors.primaryBackgroundTransparent};
-	box-shadow: 0 .3rem .4rem 0 rgba(0,0,0,.14), 0 .1rem .8rem 0 rgba(0,0,0,.12), 0 .3rem .3rem -.2rem rgba(0,0,0,.4);
+	box-shadow: ${shadow.default};
 `;
 
 const Header = styled.h2`
