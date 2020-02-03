@@ -11,7 +11,7 @@ import { setAuthorization, setAuthToken } from '../../store/actions';
 import { colors } from '../../variables/styles';
 
 
-const endpoint = 'http://arksoil.net:8081';
+const endpoint = 'http://localhost:8081';
 const socket = socketIOClient(endpoint);
 
 

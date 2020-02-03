@@ -145,27 +145,24 @@ class Shop extends Component {
 	addItems = async (name, price) => {
 		const { userData, token } = this.props;
 		console.log(userData.items);
-		// const body = JSON.stringify({
-		// 	name,
-		// 	price
-		// });
 
-		// try {
-		// 	const response = await axios.post(`${url.post.ADD_ITEM}/${userData._id}`, {
-		// 		withCredientials: true,
-		// 		headers: {
-		// 			Authorization: `${token}`
-		// 		},
-		// 		body
-		// 	});
+		try {
+			const response = await axios.post(`${url.post.ADD_ITEM}/${userData._id}`, { name, price }
+			, {
+				withCredientials: true,
+				headers: {
+					Authorization: `${token}`
+				}
+			});
 
-		// 	if (response.status === 200) {
-		// 		await this.props.addUserData(response.data.data);
-		// 		console.log(userData);
-		// 	}
-		// } catch (error) {
-		// 	console.log(error);
-		// }
+			if (response.status === 200) {
+				if (response?.data?.data) {
+					await this.props.addUserData(response.data.data);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	getAllItems = async () => {
@@ -197,21 +194,10 @@ class Shop extends Component {
 		try {
 			const response = await axios.post(`${url.post.ADD_COINS}?amount=${amount}&id=${userData._id}`);
 			if (response.status === 200) {
-				try {
-					const response = await axios.get(`${url.get.GET_PLAYER_DATA}/${userData._id}`, {
-						withCredientials: true,
-						headers: {
-							Authorization: `${token}`
-						}
-					});
-					await this.props.addUserData(response.data.data);
-					
-				} catch (error) {
-					console.log(error.response);
-				}
+				this.props.addUserData(token, userData._id);
 			}
 		} catch (error) {
-			console.log(error.response);
+			console.log(error);
 		}
 	}
 

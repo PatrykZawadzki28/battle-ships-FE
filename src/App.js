@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk';
+
 import styled from 'styled-components';
 
 import Shop from './Components/Shop/Shop';
@@ -11,6 +13,7 @@ import { colors } from './variables/styles';
 
 import PrivateRoute from './routes/privateRoute';
 import reducers from './store/reducers';
+import { addUserData } from './store/actions';
 
 import Dashboard from './Components/Dashboard/Dashboard';
 import Layout from './Containers/Layout/Layout';
@@ -21,11 +24,16 @@ import { loadState, saveState } from './store/localStorage';
 
 const persistedState = loadState();
 
-const store = createStore(reducers, persistedState);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, persistedState, composeEnhancers(applyMiddleware(thunk)));
+
 
 store.subscribe(() => {
 	saveState(store.getState());
 })
+store.dispatch(addUserData());
+
 
 const Container = styled.div`
 	max-width: 100%;
