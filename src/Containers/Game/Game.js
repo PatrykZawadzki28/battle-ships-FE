@@ -8,14 +8,14 @@ import {
   clearUserData,
   logoutUser,
 } from '../../store/actions';
-// import { colors, shadow } from '../../variables/styles';
+import { colors, shadow } from '../../variables/styles';
 
 import Board from './Board';
 import Chat from './Chat';
 
 const MainWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #4d6c85;
 `;
 
@@ -36,6 +36,32 @@ const Middle = styled.div`
   padding: 4rem 0;
 `;
 
+const LeftSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+`;
+
+const Ship = styled.div`
+  height: 3.7rem;
+  width: ${({ length }) => length && `${length * 3}rem`};
+  background: ${colors.background};
+  margin: 1rem;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ships = {
+  Carrier: 5,
+  Battleship: 4,
+  Cruiser: 3,
+  Submarine: 3,
+  Destroyer: 2,
+};
+
 class Game extends Component {
   constructor() {
     super();
@@ -51,6 +77,11 @@ class Game extends Component {
     return (
       <MainWrapper>
         <Container>
+          <LeftSide>
+            {Object.entries(ships).map(([key, el]) => (
+              <Ship length={el}>{key}</Ship>
+            ))}
+          </LeftSide>
           <Middle>
             <Board />
             <Chat text={text} textHistory={textHistory} />

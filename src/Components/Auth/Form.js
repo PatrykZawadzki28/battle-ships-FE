@@ -44,7 +44,7 @@ const StyledButton = styled.button`
   margin: 2rem 0 1.2rem 0;
   padding: 1.4rem 2rem;
   font-size: 2rem;
-  background-color: ${colors.primaryBackground};
+  background-color: ${colors.button};
 `;
 
 const OtherOptions = styled.div`

@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Game from '../Game/Game';
 
 import {
   setAuthorization,
@@ -24,7 +25,7 @@ const SharedNavigationCss = `
 const MainWrapper = styled.div`
   width: 100%;
   height: 100vh;
-  background: #4d6c85;
+  background: ${colors.background};
 `;
 
 const Container = styled.div`
@@ -54,7 +55,7 @@ const RightSide = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  background-color: ${colors.primaryBackground};
+  background-color: ${colors.button};
   padding: 1.2rem 1.6rem;
   width: ${({ wide }) => (wide ? '20rem' : '13rem')};
   text-align: center;
@@ -64,7 +65,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledButton = styled.button`
-  background-color: ${colors.primaryBackground};
+  background-color: ${colors.button};
   padding: 1.2rem 1.6rem;
   width: ${({ wide }) => (wide ? '20rem' : '13rem')};
   text-decoration: none;
@@ -89,7 +90,8 @@ const Footer = styled.div`
   width: 100%;
   background-color: ${colors.primaryBackground};
   color: ${colors.white};
-  font-size: 3rem;
+  font-size: 2rem;
+  padding: 2rem;
   text-align: center;
 `;
 
@@ -136,7 +138,7 @@ class Layout extends Component {
     const { children, userData } = this.props;
 
     if (gameStatus === 2) {
-      return <Redirect to="/game/board" />;
+      return <Game />;
     }
 
     if (gameStatus === 3) {
@@ -176,7 +178,9 @@ class Layout extends Component {
           </RightSide>
         </Container>
         <ChildrenContainer>{children}</ChildrenContainer>
-        <Footer>COPYRIGHT INFO!</Footer>
+        <Footer>
+          © {new Date().getFullYear()} S Team. All rights reserved.
+        </Footer>
       </MainWrapper>
     );
   }

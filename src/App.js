@@ -17,14 +17,12 @@ import Layout from './Containers/Layout/Layout';
 import Login from './Containers/Auth/Login';
 import Register from './Containers/Auth/Register';
 
-import Game from './Containers/Game/Game';
-
 const Container = styled.div`
   max-width: 100%;
   height: 100%;
   background-color: ${colors.secondaryBackground};
 `;
-
+const url = '/game';
 class App extends Component {
   render() {
     return (
@@ -32,32 +30,14 @@ class App extends Component {
         <Router>
           <Container>
             <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Route
-                path="/game"
-                render={({ match: { url } }) => (
-                  <>
-                    <Layout>
-                      <PrivateRoute
-                        exact
-                        path={`${url}/`}
-                        component={Dashboard}
-                      />
-                      <PrivateRoute path={`${url}/board`} component={Game} />
-                      <PrivateRoute
-                        path={`${url}/profil`}
-                        component={Profile}
-                      />
-                      <PrivateRoute path={`${url}/sklep`} component={Shop} />
-                      <PrivateRoute
-                        path={`${url}/ranking`}
-                        component={Ranking}
-                      />
-                    </Layout>
-                  </>
-                )}
-              />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Layout>
+                <PrivateRoute exact path={`${url}/`} component={Dashboard} />
+                <PrivateRoute path={`${url}/profil`} component={Profile} />
+                <PrivateRoute path={`${url}/sklep`} component={Shop} />
+                <PrivateRoute path={`${url}/ranking`} component={Ranking} />
+              </Layout>
             </Switch>
           </Container>
         </Router>

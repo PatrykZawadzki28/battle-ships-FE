@@ -23,10 +23,11 @@ const Header = styled.h1`
 
 class Auth extends Component {
   render() {
+    console.log(this.props);
     return (
       <Container>
         <Header>BATTLESHIPS</Header>
-        <Login onChangeStatus="login" onRouterHistory={this.props.history} />
+        <Login onRouterHistory={this.props.history} />
       </Container>
     );
   }

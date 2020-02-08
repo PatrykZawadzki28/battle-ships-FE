@@ -26,7 +26,7 @@ class Auth extends Component {
     return (
       <Container>
         <Header>BATTLESHIPS</Header>
-        <Register onChangeStatus="register" />
+        <Register />
       </Container>
     );
   }

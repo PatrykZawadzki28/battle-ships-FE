@@ -8,8 +8,7 @@ const ItemButton = styled.button`
   font-size: 1.4rem;
   padding: 1.4rem 2rem;
   margin-bottom: 1.4rem;
-  color: ${colors.white};
-  background-color: ${colors.primaryBackground};
+  background-color: ${colors.button};
 `;
 
 const CoinAmountWrapper = styled.div`
@@ -18,6 +17,7 @@ const CoinAmountWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const CoinContent = styled.div`
@@ -34,7 +34,8 @@ const CoinContent = styled.div`
   border-radius: 50%;
   box-shadow: ${shadow.default};
   background-color: ${({ extraStyling }) =>
-    extraStyling && colors.primaryBackground};
+    extraStyling && colors.secondaryBackground};
+  color: ${({ extraStyling }) => extraStyling && colors.secondaryBackground};
 `;
 
 const Coin = styled.div`
@@ -47,16 +48,26 @@ const Coin = styled.div`
 const CoinAmount = styled.div`
   font-size: 2rem;
   padding-left: 0.6rem;
+  color: ${colors.white};
 `;
 
 const CoinPrice = styled.div`
   font-size: 2rem;
+  color: ${colors.white};
 `;
 
 const BuyCoinsButton = styled(ItemButton)`
   font-size: 2rem;
 `;
 
+const Header = styled.span`
+  font-size: 2rem;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const mockedCoinsData = [
   {
     amount: 10,
@@ -84,7 +95,7 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    background: `${colors.secondaryBackground}`,
+    background: `${colors.background}`,
     textAlign: 'center',
     'box-shadow': `${shadow.default}`,
   },
@@ -103,29 +114,30 @@ class PaymentModal extends React.Component {
       <div>
         <Modal
           isOpen={modalIsOpen}
-          // onAfterOpen={this.afterOpenModal}
           onRequestClose={closeModal}
           ariaHideApp={false}
           style={customStyles}
           contentLabel="Example Modal"
         >
           <ContentWrapper>
-            Wybierz swoją opcję:
-            {mockedCoinsData.map(({ price, amount }, index) => (
-              <CoinContent
-                key={index}
-                extraStyling={price === currPrice ? true : false}
-                onClick={() => setBuyCoinsOption(amount, price)}
-              >
-                <CoinAmountWrapper>
-                  <Coin />
-                  <CoinAmount>{amount}</CoinAmount>
-                </CoinAmountWrapper>
-                <CoinPrice>{price}zł</CoinPrice>
-              </CoinContent>
-            ))}
+            <Header>Dostępne opcje: </Header>
+            <Content>
+              {mockedCoinsData.map(({ price, amount }, index) => (
+                <CoinContent
+                  key={index}
+                  extraStyling={price === currPrice ? true : false}
+                  onClick={() => setBuyCoinsOption(amount, price)}
+                >
+                  <CoinAmountWrapper>
+                    <Coin />
+                    <CoinAmount>{amount}</CoinAmount>
+                  </CoinAmountWrapper>
+                  <CoinPrice>{price}zł</CoinPrice>
+                </CoinContent>
+              ))}
+            </Content>
+            <BuyCoinsButton onClick={addCoins}>Kup</BuyCoinsButton>
           </ContentWrapper>
-          <BuyCoinsButton onClick={addCoins}>Kup</BuyCoinsButton>
         </Modal>
       </div>
     );

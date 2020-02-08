@@ -17,10 +17,11 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   margin: 2.6rem;
-  box-shadow: ${shadow.default};
+  /* box-shadow: ${shadow.default};
+  background: ${colors.secondaryBackground}; */
 `;
 
-const Headers = styled.div`
+const Header = styled.div`
   padding: 2rem;
   font-size: 3rem;
 `;
@@ -63,21 +64,23 @@ const ItemButton = styled.button`
   font-size: 1.4rem;
   padding: 1.4rem 2rem;
   margin-bottom: 1.4rem;
-  color: ${colors.white};
-  background-color: ${colors.primaryBackground};
+  background-color: ${colors.button};
 `;
 
 const BuyButton = styled.button`
   font-size: 1.4rem;
-  /* padding: 1.4rem 2rem; */
-  height: 7rem;
-  width: 7rem;
-  padding: 1rem;
-  border-radius: 3.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  height: 10rem;
+  width: 10rem;
+  padding: 2rem;
+  border-radius: 5rem;
   align-self: center;
   margin-bottom: 1.4rem;
-  color: ${colors.white};
-  background-color: ${colors.primaryBackground};
+  background-color: ${colors.button};
 `;
 
 class Shop extends Component {
@@ -142,20 +145,24 @@ class Shop extends Component {
     const { amount } = this.state;
     const { userData, token } = this.props;
 
-    try {
-      await axios.post(
-        `${url.post.ADD_COINS}?amount=${amount}&id=${userData._id}`,
-        {
-          withCredientials: true,
-          headers: {
-            Authorization: `${token}`,
+    if (amount !== 0) {
+      try {
+        await axios.post(
+          `${url.post.ADD_COINS}?amount=${amount}&id=${userData._id}`,
+          {
+            withCredientials: true,
+            headers: {
+              Authorization: `${token}`,
+            },
           },
-        },
-      );
+        );
 
-      this.props.fetchUserData(token);
-    } catch (error) {
-      console.log(error);
+        this.props.fetchUserData(token);
+      } catch (error) {
+        console.log(error);
+      }
+      this.closeModal();
+      this.setState({ amount: 0, price: 0 });
     }
   };
 
@@ -171,7 +178,7 @@ class Shop extends Component {
     const { items, modalIsOpen } = this.state;
     return (
       <Container>
-        <Headers>SKLEP</Headers>
+        <Header>SKLEP</Header>
         <ContentWrapper>
           {items.map(({ name, price }, index) => (
             <Content key={index}>
