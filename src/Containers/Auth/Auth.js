@@ -6,7 +6,7 @@ import Register from '../../Components/Auth/Register';
 import Login from '../../Components/Auth/Login';
 import backgroundImage from '../../Img/thumb-1920-255067.png';
 
-import { colors } from '../../variables/styles';
+// import { colors } from '../../variables/styles';
 
 const Container = styled.div`
 	width: 100vw;

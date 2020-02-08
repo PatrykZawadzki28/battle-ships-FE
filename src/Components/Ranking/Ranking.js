@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { colors } from '../../variables/styles';
+// import { colors } from '../../variables/styles';
 
 
 const Container = styled.div`
