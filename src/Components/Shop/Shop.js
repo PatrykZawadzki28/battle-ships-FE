@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
 import { connect } from 'react-redux';
+
+import PaymentModal from '../Modal/PaymentModal';
 import { setAuthorization, fetchUserData } from '../../store/actions';
 
 import url from '../../constants/connection';
@@ -66,65 +67,18 @@ const ItemButton = styled.button`
   background-color: ${colors.primaryBackground};
 `;
 
-const BuyCoinsButton = styled(ItemButton)`
-  font-size: 2rem;
+const BuyButton = styled.button`
+  font-size: 1.4rem;
+  /* padding: 1.4rem 2rem; */
+  height: 7rem;
+  width: 7rem;
+  padding: 1rem;
+  border-radius: 3.5rem;
+  align-self: center;
+  margin-bottom: 1.4rem;
+  color: ${colors.white};
+  background-color: ${colors.primaryBackground};
 `;
-
-const CoinAmountWrapper = styled.div`
-  display: flex;
-`;
-
-const CoinContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 9rem;
-  height: 9rem;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 2rem;
-  padding: 2rem;
-  border-radius: 50%;
-  box-shadow: ${shadow.default};
-  background-color: ${({ extraStyling }) =>
-    extraStyling && colors.primaryBackground};
-`;
-
-const Coin = styled.div`
-  width: 2.4rem;
-  height: 2.4rem;
-  background: #ffe600 0% 0% no-repeat padding-box;
-  border-radius: 1.2rem;
-`;
-
-const CoinAmount = styled.div`
-  font-size: 2rem;
-  padding-left: 0.6rem;
-`;
-
-const CoinPrice = styled.div`
-  font-size: 2rem;
-`;
-
-const mockedCoinsData = [
-  {
-    amount: 10,
-    price: 5,
-  },
-  {
-    amount: 20,
-    price: 8,
-  },
-  {
-    amount: 40,
-    price: 15,
-  },
-  {
-    amount: 80,
-    price: 25,
-  },
-];
 
 class Shop extends Component {
   constructor() {
@@ -133,6 +87,7 @@ class Shop extends Component {
       amount: 0,
       price: 0,
       items: [],
+      modalIsOpen: false,
     };
   }
 
@@ -204,8 +159,16 @@ class Shop extends Component {
     }
   };
 
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
   render() {
-    const { items } = this.state;
+    const { items, modalIsOpen } = this.state;
     return (
       <Container>
         <Headers>SKLEP</Headers>
@@ -220,23 +183,15 @@ class Shop extends Component {
               </ItemButton>
             </Content>
           ))}
+          <BuyButton onClick={this.openModal}>Kup zetony</BuyButton>
         </ContentWrapper>
-        <ContentWrapper>
-          {mockedCoinsData.map(({ price, amount }, index) => (
-            <CoinContent
-              key={index}
-              extraStyling={price === this.state.price ? true : false}
-              onClick={() => this.setBuyCoinsOption(amount, price)}
-            >
-              <CoinAmountWrapper>
-                <Coin />
-                <CoinAmount>{amount}</CoinAmount>
-              </CoinAmountWrapper>
-              <CoinPrice>{price}zł</CoinPrice>
-            </CoinContent>
-          ))}
-        </ContentWrapper>
-        <BuyCoinsButton onClick={this.addCoins}>DODAJ ZETONY</BuyCoinsButton>
+        <PaymentModal
+          addCoins={this.addCoins}
+          modalIsOpen={modalIsOpen}
+          setBuyCoinsOption={this.setBuyCoinsOption}
+          closeModal={this.closeModal}
+          currPrice={this.state.price}
+        />
       </Container>
     );
   }

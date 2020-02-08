@@ -83,7 +83,8 @@ class Login extends Component {
 
   render() {
     const { name, password, errorMessage, successMessage } = this.state;
-    const { onChangeStatus, isLoggedIn } = this.props;
+    const { isLoggedIn } = this.props;
+
     if (isLoggedIn) {
       return <Redirect to="/game" />;
     }
@@ -101,7 +102,6 @@ class Login extends Component {
           password={password}
           onChangeValue={this.onChangeValue}
           onSubmit={this.onSubmit}
-          onChangeStatus={onChangeStatus}
           buttonText="zaloguj się"
         />
       </>

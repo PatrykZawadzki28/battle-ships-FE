@@ -23,7 +23,7 @@ const SharedNavigationCss = `
 
 const MainWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #4d6c85;
 `;
 

@@ -14,7 +14,9 @@ import PrivateRoute from './routes/privateRoute';
 import Profile from './Components/Profile/Profile';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Layout from './Containers/Layout/Layout';
-import Auth from './Containers/Auth/Auth';
+import Login from './Containers/Auth/Login';
+import Register from './Containers/Auth/Register';
+
 import Game from './Containers/Game/Game';
 
 const Container = styled.div`
@@ -30,14 +32,18 @@ class App extends Component {
         <Router>
           <Container>
             <Switch>
-              <Route exact path="/login" component={Auth} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
               <Route
-                exact
                 path="/game"
                 render={({ match: { url } }) => (
                   <>
                     <Layout>
-                      <PrivateRoute path={`${url}/`} component={Dashboard} />
+                      <PrivateRoute
+                        exact
+                        path={`${url}/`}
+                        component={Dashboard}
+                      />
                       <PrivateRoute path={`${url}/board`} component={Game} />
                       <PrivateRoute
                         path={`${url}/profil`}

@@ -91,10 +91,8 @@ class Register extends Component {
       errorMessage,
       successMessage,
     } = this.state;
-    const { onChangeStatus, isLoggedIn } = this.props;
-    console.log(this.props.isloggedIn);
+    const { isLoggedIn } = this.props;
 
-    console.log(isLoggedIn);
     if (isLoggedIn) {
       return <Redirect to="/game" />;
     }
@@ -113,7 +111,6 @@ class Register extends Component {
           confirmPassword={confirmPassword}
           onChangeValue={this.onChangeValue}
           onSubmit={this.onSubmit}
-          onChangeStatus={onChangeStatus}
           withConfirmPassword
           buttonText="Zarejestruj się"
         />
