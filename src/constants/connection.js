@@ -3,6 +3,7 @@ const url = {
   post: {
     REGISTER: 'http://localhost:8081/players/register',
     LOGIN: 'http://localhost:8081/players/login',
+    ADD_STATS: 'http://localhost:8081/players/stats',
     ADD_COINS: 'http://localhost:8081/store/coins',
     ADD_ITEM: 'http://localhost:8081/store/item',
   },

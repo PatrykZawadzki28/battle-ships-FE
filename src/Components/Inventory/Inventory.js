@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import ReactTooltip from 'react-tooltip';
+
 import styled from 'styled-components';
 
 import { colors } from '../../variables/styles';
@@ -11,7 +13,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   padding: 2rem;
-  font-size: 5rem;
+  font-size: 3rem;
 `;
 
 const Items = styled.div`
@@ -21,40 +23,47 @@ const Items = styled.div`
 
 const ItemWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ItemImage = styled.div`
-  width: 2rem;
-  height: 2rem;
+  width: 4rem;
+  height: 4rem;
   background: ${colors.white};
 `;
 
 const ItemHeader = styled.div`
   font-size: 2rem;
+  padding: 0 1rem;
 `;
 
 const ItemAmount = styled.div`
   font-size: 2rem;
 `;
+const ReactTooltipStyled = styled(ReactTooltip)`
+  &.type-dark.place-top {
+    background: ${colors.secondaryBackground};
+    padding: 0.8rem 1rem;
+    cursor: pointer;
 
-const ItemDescripction = styled.div`
-  font-size: 1.6rem;
+    &:after {
+      border-top-color: ${colors.success};
+    }
+  }
 `;
 
 const Inventory = ({ items }) => {
-  console.log(items);
   return (
     <Container>
       <Header>Ekwipunek</Header>
       <Items>
-        {items?.map(({ name, price, amount }) => (
-          <ItemWrapper>
+        {items?.map(({ name, amount, description }) => (
+          <ItemWrapper data-tip={`${description}`}>
             <ItemImage />
             <ItemHeader>{name}</ItemHeader>
             <ItemAmount>ilość: {amount}</ItemAmount>
-            <ItemDescripction>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </ItemDescripction>
+            <ReactTooltipStyled />
           </ItemWrapper>
         ))}
       </Items>

@@ -67,7 +67,6 @@ class Register extends Component {
           { name, password },
           url.headers,
         );
-        console.log(response);
         if (response.status === 200) {
           this.setState({
             successMessage: 'User created!',

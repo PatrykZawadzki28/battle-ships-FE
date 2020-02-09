@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import ReactTooltip from 'react-tooltip';
 import { connect } from 'react-redux';
+import axios from 'axios';
+
+import styled from 'styled-components';
 
 import PaymentModal from '../Modal/PaymentModal';
 import { setAuthorization, fetchUserData } from '../../store/actions';
@@ -16,9 +18,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 2.6rem;
-  /* box-shadow: ${shadow.default};
-  background: ${colors.secondaryBackground}; */
+  margin: 6rem 2.6rem;
 `;
 
 const Header = styled.div`
@@ -72,9 +72,9 @@ const ItemButton = styled.button`
 const BuyButton = styled.button`
   font-size: 1.4rem;
   cursor: pointer;
-  position: absolute;
-  top: 50%;
-  right: 5%;
+  position: fixed;
+  top: 20%;
+  right: 3%;
   transform: translateY(-50%);
   height: 10rem;
   width: 10rem;
@@ -83,6 +83,18 @@ const BuyButton = styled.button`
   align-self: center;
   margin-bottom: 1.4rem;
   background-color: ${colors.button};
+`;
+
+const ReactTooltipStyled = styled(ReactTooltip)`
+  &.type-dark.place-top {
+    background: ${colors.secondaryBackground};
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+
+    &:after {
+      border-top-color: ${colors.success};
+    }
+  }
 `;
 
 class Shop extends Component {
@@ -100,13 +112,13 @@ class Shop extends Component {
     this.setState({ amount, price });
   };
 
-  addItems = async (name, price) => {
+  addItem = async (name, price, description) => {
     const { userData, token } = this.props;
 
     try {
       await axios.post(
         `${url.post.ADD_ITEM}/${userData._id}`,
-        { name, price },
+        { name, price, description },
         {
           withCredientials: true,
           headers: {
@@ -182,14 +194,17 @@ class Shop extends Component {
       <Container>
         <Header>SKLEP</Header>
         <ContentWrapper>
-          {items?.map(({ name, price }, index) => (
+          {items?.map(({ name, price, description }, index) => (
             <Content key={index}>
-              <ItemImage img={A} />
+              <ItemImage data-tip={`${description}`} img={A} />
               <ItemName>{name}</ItemName>
               <ItemPrice>{price}</ItemPrice>
-              <ItemButton onClick={() => this.addItems(name, price)}>
+              <ItemButton
+                onClick={() => this.addItem(name, price, description)}
+              >
                 Kup teraz
               </ItemButton>
+              <ReactTooltipStyled />
             </Content>
           ))}
           <BuyButton onClick={this.openModal}>Kup zetony</BuyButton>

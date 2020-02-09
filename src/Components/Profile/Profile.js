@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 2rem;
+  margin: 6rem 2.6rem;
 `;
 
 const ProfileWrapper = styled.div`
@@ -25,7 +25,7 @@ const ProfileWrapper = styled.div`
 const ProfilName = styled.h2`
   font-size: 3rem;
   text-align: center;
-  padding: 1rem 0;
+  padding: 2rem 0;
 `;
 
 const ProfilImage = styled.img`
@@ -66,8 +66,8 @@ class Profile extends Component {
       <Container>
         <Inventory items={userData.items} />
         <ProfileWrapper>
-          <ProfilName>{userData.name}</ProfilName>
           <ProfilImage src={`https://robohash.org/${userData.name}.png`} />
+          <ProfilName>{userData.name}</ProfilName>
         </ProfileWrapper>
 
         <Statistics>Statistics</Statistics>

@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import styled from 'styled-components';
+
 import Game from '../Game/Game';
+import url from '../../constants/connection';
 
 import {
   setAuthorization,
   setAuthToken,
   clearUserData,
   logoutUser,
+  fetchUserData,
 } from '../../store/actions';
 import { colors, shadow } from '../../variables/styles';
 
@@ -75,12 +79,23 @@ const StyledButton = styled.button`
 
 const SearchButton = styled(StyledButton)`
   margin-top: 2rem;
+  position: relative;
+
+  span {
+    position: absolute;
+    right: 0.4rem;
+    top: 0.4rem;
+    cursor: pointer;
+    font-size: 1.6rem;
+  }
 `;
 
 const CoinsInfo = styled.p`
   font-size: 1.6rem;
-  margin: 0 auto;
+  margin: 0.6rem auto;
   padding: 1rem;
+  box-shadow: ${shadow.default};
+  background-color: ${colors.button};
 `;
 
 const Footer = styled.div`
@@ -100,12 +115,9 @@ class Layout extends Component {
     this.state = {
       room: '',
       gameStatus: 0,
-      matchStatistics: {
-        hit: 0,
-        miss: 0,
-        itemsUsed: 0,
-        accuracy: '',
-      },
+      hits: 0,
+      misses: 0,
+      itemsUsed: 0,
     };
   }
 
@@ -122,15 +134,39 @@ class Layout extends Component {
 
   onLeaveGame = () => {
     const { room } = this.state;
-    socket.emit('leaveGame', room);
+    let inLobby = true;
+    this.saveUserStatistics('lose');
+    socket.emit('leaveGame', room, inLobby);
   };
 
   logout = async () => {
     await this.props.logoutUser();
   };
 
-  saveUserStatistics = () => {
-    // send current statistics to database
+  saveUserStatistics = async matchResult => {
+    const { hits, misses, itemsUsed, gameStatus } = this.state;
+    const { token } = this.props;
+
+    let body = {
+      lastGameHits: hits + 900,
+      lastGameMisses: misses + 90,
+      itemsUsed: itemsUsed + 31,
+    };
+
+    if (gameStatus === 3 || gameStatus === 1) {
+      try {
+        await axios.post(`${url.post.ADD_STATS}?result=${matchResult}`, body, {
+          withCredientials: true,
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+
+        this.props.fetchUserData(token);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
   render() {
     const { room, gameStatus } = this.state;
@@ -141,6 +177,7 @@ class Layout extends Component {
     }
 
     if (gameStatus === 3) {
+      // this.saveUserStatistics('win');
     }
     return (
       <MainWrapper>
@@ -154,15 +191,19 @@ class Layout extends Component {
             </StyledLink>
           </LeftSide>
           <Middle>
-            {room}
-            {!room && (
+            {gameStatus === 0 && (
               <SearchButton wide onClick={this.onSearchGame}>
-                SEARCH GAME
+                DOŁĄCZ DO GRY
               </SearchButton>
             )}
-            {room && (
+            {gameStatus === 1 && (
+              <SearchButton wide>
+                SZUKANIE GRY...<span onClick={this.onLeaveGame}>X</span>
+              </SearchButton>
+            )}
+            {gameStatus === 2 && (
               <StyledButton wide onClick={this.onLeaveGame}>
-                LEAVE GAME
+                WYJDŹ Z GRY
               </StyledButton>
             )}
             <CoinsInfo>ZETONY: {userData.coins}</CoinsInfo>
@@ -188,6 +229,7 @@ class Layout extends Component {
 const mapStateToProps = state => ({
   isLoggedIn: state.isloggedIn,
   userData: state.userData,
+  token: state.token,
 });
 
 const mapDispatchToProps = {
@@ -195,6 +237,7 @@ const mapDispatchToProps = {
   setAuthToken,
   clearUserData,
   logoutUser,
+  fetchUserData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

@@ -23,7 +23,6 @@ const Header = styled.h1`
 
 class Auth extends Component {
   render() {
-    console.log(this.props);
     return (
       <Container>
         <Header>BATTLESHIPS</Header>
