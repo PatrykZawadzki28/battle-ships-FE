@@ -3,25 +3,54 @@ import { connect } from 'react-redux';
 
 import styled from 'styled-components';
 
+import Inventory from '../Inventory/Inventory';
+
 import { fetchUserData } from '../../store/actions';
-// import { colors } from '../../variables/styles';
+import { colors } from '../../variables/styles';
 
 const Container = styled.div`
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
-  max-width: 90rem;
+  flex-direction: row;
+  align-items: center;
   height: 100%;
+  width: 100%;
+  padding: 2rem;
 `;
 
-const Header = styled.div`
-  padding: 2rem;
-  font-size: 3rem;
+const ProfileWrapper = styled.div`
+  margin: 2rem;
 `;
 
-const RightSide = styled.div`
-  padding: 2rem;
+const ProfilName = styled.h2`
   font-size: 3rem;
+  text-align: center;
+  padding: 1rem 0;
+`;
+
+const ProfilImage = styled.img`
+  height: 12rem;
+  width: 12rem;
+  border-radius: 6rem;
+  background: ${colors.primaryBackground};
+`;
+
+// const Inventory = styled.div`
+//   height: 12rem;
+//   width: 100%;
+//   font-size: 3rem;
+//   text-align: center;
+//   margin-top: 5.5rem;
+//   background: ${colors.primaryBackground};
+// `;
+
+const Statistics = styled.div`
+  height: 12rem;
+  width: 100%;
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 5.5rem;
+  background: ${colors.primaryBackground};
 `;
 
 class Profile extends Component {
@@ -35,8 +64,13 @@ class Profile extends Component {
     const { userData } = this.props;
     return (
       <Container>
-        <Header>PROFIL</Header>
-        <RightSide>imie: {userData.name}</RightSide>
+        <Inventory items={userData.items} />
+        <ProfileWrapper>
+          <ProfilName>{userData.name}</ProfilName>
+          <ProfilImage src={`https://robohash.org/${userData.name}.png`} />
+        </ProfileWrapper>
+
+        <Statistics>Statistics</Statistics>
       </Container>
     );
   }

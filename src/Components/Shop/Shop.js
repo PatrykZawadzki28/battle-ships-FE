@@ -149,6 +149,7 @@ class Shop extends Component {
       try {
         await axios.post(
           `${url.post.ADD_COINS}?amount=${amount}&id=${userData._id}`,
+          {},
           {
             withCredientials: true,
             headers: {
