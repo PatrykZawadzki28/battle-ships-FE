@@ -32,6 +32,7 @@ const CoinContent = styled.div`
   margin: 2rem;
   padding: 2rem;
   border-radius: 50%;
+  cursor: pointer;
   box-shadow: ${shadow.default};
   background-color: ${({ extraStyling }) =>
     extraStyling && colors.secondaryBackground};

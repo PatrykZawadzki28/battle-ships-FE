@@ -31,7 +31,7 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  min-width: 18rem;
+  width: 18rem;
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 2rem;
@@ -41,6 +41,8 @@ const Content = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const ItemImage = styled.h3`
@@ -100,7 +102,6 @@ class Shop extends Component {
 
   addItems = async (name, price) => {
     const { userData, token } = this.props;
-    console.log(userData.items);
 
     try {
       await axios.post(
@@ -181,7 +182,7 @@ class Shop extends Component {
       <Container>
         <Header>SKLEP</Header>
         <ContentWrapper>
-          {items.map(({ name, price }, index) => (
+          {items?.map(({ name, price }, index) => (
             <Content key={index}>
               <ItemImage img={A} />
               <ItemName>{name}</ItemName>

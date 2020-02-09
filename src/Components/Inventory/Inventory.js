@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-// import { colors } from '../../variables/styles';
+import { colors } from '../../variables/styles';
 
 const Container = styled.div`
   width: 100%;
@@ -20,13 +20,23 @@ const Items = styled.div`
 `;
 
 const ItemWrapper = styled.div`
-  padding: 2rem;
+  display: flex;
+`;
+
+const ItemImage = styled.div`
+  width: 2rem;
+  height: 2rem;
+  background: ${colors.white};
 `;
 
 const ItemHeader = styled.div`
-  padding: 2rem;
   font-size: 2rem;
 `;
+
+const ItemAmount = styled.div`
+  font-size: 2rem;
+`;
+
 const ItemDescripction = styled.div`
   font-size: 1.6rem;
 `;
@@ -37,11 +47,11 @@ const Inventory = ({ items }) => {
     <Container>
       <Header>Ekwipunek</Header>
       <Items>
-        {items?.map(({ name, price }) => (
+        {items?.map(({ name, price, amount }) => (
           <ItemWrapper>
-            <ItemHeader>
-              {name}: {price}
-            </ItemHeader>
+            <ItemImage />
+            <ItemHeader>{name}</ItemHeader>
+            <ItemAmount>ilość: {amount}</ItemAmount>
             <ItemDescripction>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </ItemDescripction>
