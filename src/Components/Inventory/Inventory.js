@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
 import styled from 'styled-components';
 
-import { colors } from '../../variables/styles';
+import { colors, shadow } from '../../variables/styles';
 
 const Container = styled.div`
   width: 100%;
@@ -25,6 +25,10 @@ const ItemWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 40rem;
+  background: ${colors.secondaryBackground};
+  padding: 1rem;
+  box-shadow: ${shadow.default};
 `;
 
 const ItemImage = styled.div`
@@ -36,11 +40,14 @@ const ItemImage = styled.div`
 const ItemHeader = styled.div`
   font-size: 2rem;
   padding: 0 1rem;
+  background: ${colors.secondaryBackground};
 `;
 
 const ItemAmount = styled.div`
   font-size: 2rem;
+  background: ${colors.secondaryBackground};
 `;
+
 const ReactTooltipStyled = styled(ReactTooltip)`
   &.type-dark.place-top {
     background: ${colors.secondaryBackground};

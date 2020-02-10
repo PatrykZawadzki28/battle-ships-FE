@@ -68,8 +68,8 @@ class Login extends Component {
         this.setState({
           errorMessage: '',
         });
-        await this.props.fetchUserData(response.data.data);
         await this.props.setAuthToken(response.data.token.token);
+        await this.props.fetchUserData(response.data.token.token);
         await this.props.setAuthorization(true);
         await this.props.onRouterHistory.push('/game');
       }

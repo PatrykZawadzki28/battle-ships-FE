@@ -38,7 +38,7 @@ const fetchUserData = token => async dispatch => {
       value: response.data.data,
     });
   } catch (error) {
-    // dispatch(logoutUser());
+    dispatch(logoutUser());
   }
 };
 

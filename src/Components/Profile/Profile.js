@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import Inventory from '../Inventory/Inventory';
+import Statistics from '../Statistics/Statistics';
 
 import { fetchUserData } from '../../store/actions';
 import { colors } from '../../variables/styles';
@@ -12,8 +13,7 @@ const Container = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  align-items: center;
-  height: 100%;
+  align-items: flex-start;
   width: 100%;
   margin: 6rem 2.6rem;
 `;
@@ -35,24 +35,6 @@ const ProfilImage = styled.img`
   background: ${colors.primaryBackground};
 `;
 
-// const Inventory = styled.div`
-//   height: 12rem;
-//   width: 100%;
-//   font-size: 3rem;
-//   text-align: center;
-//   margin-top: 5.5rem;
-//   background: ${colors.primaryBackground};
-// `;
-
-const Statistics = styled.div`
-  height: 12rem;
-  width: 100%;
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 5.5rem;
-  background: ${colors.primaryBackground};
-`;
-
 class Profile extends Component {
   async componentDidMount() {
     const { token, fetchUserData } = this.props;
@@ -69,8 +51,7 @@ class Profile extends Component {
           <ProfilImage src={`https://robohash.org/${userData.name}.png`} />
           <ProfilName>{userData.name}</ProfilName>
         </ProfileWrapper>
-
-        <Statistics>Statistics</Statistics>
+        <Statistics items={userData.statistics} />
       </Container>
     );
   }

@@ -40,6 +40,7 @@ const Content = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -53,13 +54,18 @@ const ItemImage = styled.h3`
 `;
 
 const ItemName = styled.h3`
+  position: absolute;
+  top: 3rem;
+  width: 18rem;
   font-size: 1.6rem;
   padding: 2rem 1.2rem;
+  background: transparent;
 `;
 
 const ItemPrice = styled.p`
   font-size: 1.6rem;
   padding-bottom: 0.8rem;
+  background: ${colors.secondaryBackground};
 `;
 
 const ItemButton = styled.button`
@@ -73,9 +79,9 @@ const BuyButton = styled.button`
   font-size: 1.4rem;
   cursor: pointer;
   position: fixed;
-  top: 20%;
+  top: 15%;
   right: 3%;
-  transform: translateY(-50%);
+  transform: translateY(-15%);
   height: 10rem;
   width: 10rem;
   padding: 2rem;
@@ -194,10 +200,10 @@ class Shop extends Component {
       <Container>
         <Header>SKLEP</Header>
         <ContentWrapper>
-          {items?.map(({ name, price, description }, index) => (
-            <Content key={index}>
+          {items?.map(({ name, price, description }) => (
+            <Content key={description}>
               <ItemImage data-tip={`${description}`} img={A} />
-              <ItemName>{name}</ItemName>
+              <ItemName data-tip={`${description}`}>{name}</ItemName>
               <ItemPrice>{price}</ItemPrice>
               <ItemButton
                 onClick={() => this.addItem(name, price, description)}

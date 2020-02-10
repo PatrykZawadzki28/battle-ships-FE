@@ -8,7 +8,7 @@ import {
   clearUserData,
   logoutUser,
 } from '../../store/actions';
-import { colors, shadow } from '../../variables/styles';
+import { colors } from '../../variables/styles';
 
 import Board from './Board';
 import Chat from './Chat';
@@ -74,6 +74,7 @@ class Game extends Component {
 
   render() {
     const { textHistory, text } = this.state;
+    const { room } = this.props;
     return (
       <MainWrapper>
         <Container>
@@ -84,6 +85,7 @@ class Game extends Component {
           </LeftSide>
           <Middle>
             <Board />
+            {room}
             <Chat text={text} textHistory={textHistory} />
           </Middle>
         </Container>

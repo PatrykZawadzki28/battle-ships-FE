@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -143,6 +143,10 @@ class Layout extends Component {
     await this.props.logoutUser();
   };
 
+  updateStatistics = stats => {
+    this.setState({ ...stats });
+  };
+
   saveUserStatistics = async matchResult => {
     const { hits, misses, itemsUsed, gameStatus } = this.state;
     const { token } = this.props;
@@ -173,7 +177,7 @@ class Layout extends Component {
     const { children, userData } = this.props;
 
     if (gameStatus === 2) {
-      return <Game />;
+      return <Game room={room} />;
     }
 
     if (gameStatus === 3) {
