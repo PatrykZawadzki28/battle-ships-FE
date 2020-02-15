@@ -1,109 +1,208 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+
+import BattleGrid from './BattleGrid';
+import GameLog from './GameLog';
+import ShipGrid from './ShipGrid';
+
+import { createPlayer, welcomeMessage } from '../../utils/gameHelpers';
+
+import '../../styles/Game.js';
 
 import {
-  setAuthorization,
-  setAuthToken,
-  clearUserData,
-  logoutUser,
-} from '../../store/actions';
-import { colors } from '../../variables/styles';
-
-import Board from './Board';
-import Chat from './Chat';
-
-const MainWrapper = styled.div`
-  width: 100%;
-  height: 100vh;
-  background: #4d6c85;
-`;
-
-const Container = styled.div`
-  display: flex;
-  margin: 0 auto;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 120rem;
-`;
-
-const Middle = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 4rem 0;
-`;
-
-const LeftSide = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 1rem;
-`;
-
-const Ship = styled.div`
-  height: 3.7rem;
-  width: ${({ length }) => length && `${length * 3}rem`};
-  background: ${colors.background};
-  margin: 1rem;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ships = {
-  Carrier: 5,
-  Battleship: 4,
-  Cruiser: 3,
-  Submarine: 3,
-  Destroyer: 2,
-};
+  GameContainer,
+  Title,
+  TitleContainer,
+  ShipgridContainer,
+} from '../../styles/Game';
 
 class Game extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      textHistory: [],
-      text: '',
+      activePlayer: 'player1',
+      player1: createPlayer(),
+      player2: createPlayer(),
+      allShipsSet: false,
+      gameStarting: false,
+      winner: null,
+      gameOver: false,
+      logs: [welcomeMessage],
     };
+
+    this.socket = this.props.socket;
   }
 
-  render() {
-    const { textHistory, text } = this.state;
-    const { room } = this.props;
+  updateShips = (player, updatedShips) => {
+    const { ships, currentShip } = this.state[player];
+    const payload = {
+      updatedShips,
+      player,
+    };
+
+    if (currentShip + 1 === ships.length && player === 'player2') {
+      this.shipReducer('SET_PLAYER_TWO', payload);
+      this.shipReducer('START_GAME', payload);
+    } else if (currentShip + 1 === ships.length && player === 'player1') {
+      this.shipReducer('SET_PLAYER_ONE', payload);
+    } else {
+      this.shipReducer('SET_SHIP', payload);
+    }
+  };
+
+  shipReducer = (action, { updatedShips, player }) => {
+    const { currentShip } = this.state[player];
+
+    if (action === 'SET_PLAYER_ONE') {
+      this.setState({
+        player1: {
+          ...this.state.player1,
+          ships: updatedShips,
+          shipsSet: true,
+        },
+        activePlayer: 'player2',
+      });
+    }
+
+    if (action === 'SET_PLAYER_TWO') {
+      this.setState({
+        player2: {
+          ...this.state.player2,
+          ships: updatedShips,
+          shipsSet: true,
+        },
+        allShipsSet: true,
+        gameStarting: true,
+      });
+    }
+
+    if (action === 'START_GAME') {
+      setTimeout(() => {
+        this.setState({
+          activePlayer: 'player1',
+          gameStarting: false,
+        });
+      }, 3000);
+    }
+
+    if (action === 'SET_SHIP') {
+      const updatedPlayer = {
+        ...this.state[player],
+        ships: updatedShips,
+        currentShip: currentShip + 1,
+      };
+      this.setState({
+        [player]: updatedPlayer,
+      });
+    }
+  };
+
+  updateGrids = (player, grid, type, opponent) => {
+    const payload = {
+      player,
+      grid,
+      type,
+      opponent,
+    };
+    this.gridReducer('UPDATE', payload);
+    if (opponent && opponent.sunkenShips === 5) {
+      this.gridReducer('GAME_OVER', payload);
+    } else if (opponent) {
+      this.gridReducer('HIT', payload);
+    }
+  };
+
+  gridReducer = (action, { player, grid, type, opponent }) => {
+    const other = player === 'player1' ? 'player2' : 'player1';
+    if (action === 'UPDATE') {
+      const updatedPlayer = {
+        ...this.state[player],
+        [this.state[player][type]]: grid,
+      };
+      this.setState({
+        [player]: updatedPlayer,
+      });
+    }
+    if (action === 'GAME_OVER') {
+      this.setState({
+        gameOver: true,
+        activePlayer: null,
+        winner: player,
+      });
+    }
+    if (action === 'HIT') {
+      this.setState({
+        [other]: opponent,
+        activePlayer: other,
+      });
+    }
+  };
+
+  updateLog = messages => {
+    const updatedLog = this.state.logs.slice();
+    updatedLog.unshift({ turn: `Turn ${this.state.logs.length}`, messages });
+    this.setState({
+      logs: updatedLog,
+    });
+  };
+
+  renderBattleGrid = player => {
+    const opponent = player === 'player1' ? 'player2' : 'player1';
+    const { activePlayer } = this.state;
     return (
-      <MainWrapper>
-        <Container>
-          <LeftSide>
-            {Object.entries(ships).map(([key, el]) => (
-              <Ship length={el}>{key}</Ship>
-            ))}
-          </LeftSide>
-          <Middle>
-            <Board />
-            {room}
-            <Chat text={text} textHistory={textHistory} />
-          </Middle>
-        </Container>
-      </MainWrapper>
+      <BattleGrid
+        player={player}
+        grid={this.state[player].movesGrid}
+        opponent={this.state[opponent]}
+        updateGrids={this.updateGrids}
+        updateLog={this.updateLog}
+        activePlayer={activePlayer}
+        shipsSet={this.state[player].shipsSet}
+      />
+    );
+  };
+
+  renderShipGrid = player => {
+    const { activePlayer, gameOver } = this.state;
+    return (
+      <ShipGrid
+        player={player}
+        grid={this.state[player].shipsGrid}
+        ships={this.state[player].ships}
+        currentShip={this.state[player].currentShip}
+        updateGrids={this.updateGrids}
+        updateShips={this.updateShips}
+        shipsSet={this.state[player].shipsSet}
+        activePlayer={activePlayer}
+        gameOver={gameOver}
+      />
+    );
+  };
+
+  render() {
+    return (
+      <GameContainer>
+        <TitleContainer>
+          <Title>Battleships</Title>
+        </TitleContainer>
+        <ShipgridContainer>
+          {this.renderBattleGrid('player1')}
+          <GameLog {...this.state} />
+          {this.renderBattleGrid('player2')}
+        </ShipgridContainer>
+        <ShipgridContainer>
+          {this.renderShipGrid('player1')}
+          {this.renderShipGrid('player2')}
+        </ShipgridContainer>
+      </GameContainer>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.isloggedIn,
   userData: state.userData,
+  enemyData: state.enemyData,
 });
 
-const mapDispatchToProps = {
-  setAuthorization,
-  setAuthToken,
-  clearUserData,
-  logoutUser,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Game);

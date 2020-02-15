@@ -114,7 +114,7 @@ class Layout extends Component {
     super();
     this.state = {
       room: '',
-      gameStatus: 0,
+      gameStatus: 2,
       hits: 0,
       misses: 0,
       itemsUsed: 0,
@@ -177,7 +177,7 @@ class Layout extends Component {
     const { children, userData } = this.props;
 
     if (gameStatus === 2) {
-      return <Game room={room} />;
+      return <Game socket={socket} room={room} />;
     }
 
     if (gameStatus === 3) {

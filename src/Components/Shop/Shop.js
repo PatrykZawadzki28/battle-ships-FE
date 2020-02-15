@@ -27,6 +27,7 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +41,6 @@ const Content = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

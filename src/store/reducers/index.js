@@ -1,8 +1,9 @@
 const initialValues = {
   isloggedIn: false,
   isLoading: false,
-  userData: {},
-  token: '',
+	userData: {},
+	enemyData: {},
+	token: '',
 };
 
 const reducers = (state = initialValues, action) => {
@@ -38,10 +39,45 @@ const reducers = (state = initialValues, action) => {
       return {
         ...state,
         isLoading: action.value,
-      };
+			};
     default:
       return state;
   }
 };
 
 export default reducers;
+
+// case 'SET_PLAYER_ONE':
+// 	return {
+// 		player1: {
+// 			...this.state.player1,
+// 			ships: updatedShips,
+// 			shipsSet: true
+// 		},
+// 		activePlayer: 'player2'
+// 	}
+// case 'SET_PLAYER_TWO':
+// 	return {
+// 		player1: {
+// 			...this.state.player2,
+// 			ships: updatedShips,
+// 			shipsSet: true
+// 		},
+// 		allShipsSet: true,
+// 		gameStarting: true	
+// 	}
+// case 'START_GAME':
+// 	return {
+// 		activePlayer: "player1", // timeout could be set also
+// 		gameStarting: false
+// 	}
+// case 'SET_SHIP':
+// 	const updatedPlayer = {
+// 		...this.state[player],
+// 		ships: updatedShips,
+// 		currentShip: currentShip + 1
+// 	};
+
+// 	return {
+// 		[player]: updatedPlayer
+// 	}
