@@ -7,7 +7,7 @@ body {
   font-size: 62.5%;
   outline: none;
   color: #f2f2f2;
-  background: #0c294e;
+  /* background: #0c294e; */
 }
 
 input:-webkit-autofill,
@@ -40,4 +40,8 @@ code {
 
 .ReactModal__Content--after-open {
   border: 0 !important;
+}
+
+button {
+  cursor: pointer;
 }

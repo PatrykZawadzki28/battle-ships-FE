@@ -34,7 +34,7 @@ class App extends Component {
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
               <Layout>
-                <PrivateRoute exact path={`${url}/`} component={Dashboard} />
+                <PrivateRoute exact path={`${url}/`} component={Profile} />
                 <PrivateRoute path={`${url}/profil`} component={Profile} />
                 <PrivateRoute path={`${url}/sklep`} component={Shop} />
                 <PrivateRoute path={`${url}/ranking`} component={Ranking} />

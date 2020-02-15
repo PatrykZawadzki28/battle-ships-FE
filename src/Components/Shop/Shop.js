@@ -7,9 +7,14 @@ import styled from 'styled-components';
 
 import PaymentModal from '../Modal/PaymentModal';
 import { setAuthorization, fetchUserData } from '../../store/actions';
-
 import url from '../../constants/connection';
-import A from '../../Img/72-200x200.jpg';
+
+import nalot from '../../Img/nalot.svg';
+import bomba from '../../Img/bomba.svg';
+import dodatkowyRuch from '../../Img/dodatkowy-ruch.svg';
+import przemieszczenieStatku from '../../Img/przemieszczenie-statku.svg';
+import skan from '../../Img/radar.svg';
+import dodatkoweZycie from '../../Img/zycie.svg';
 
 import { colors, shadow } from '../../variables/styles';
 
@@ -18,6 +23,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-height: 45rem;
   margin: 6rem 2.6rem;
 `;
 
@@ -35,7 +41,7 @@ const Content = styled.div`
   width: 18rem;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin: 2rem;
+  margin: 0.5rem;
   background-color: ${colors.secondaryBackground};
   box-shadow: ${shadow.default};
 `;
@@ -50,7 +56,9 @@ const ItemImage = styled.h3`
   height: 13rem;
   width: 100%;
   background: ${({ img }) => (img ? `url(${img})` : colors.white)};
-  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 `;
 
 const ItemName = styled.h3`
@@ -79,7 +87,7 @@ const BuyButton = styled.button`
   font-size: 1.4rem;
   cursor: pointer;
   position: fixed;
-  top: 15%;
+  bottom: 10%;
   right: 3%;
   transform: translateY(-15%);
   height: 10rem;
@@ -103,6 +111,16 @@ const ReactTooltipStyled = styled(ReactTooltip)`
   }
 `;
 
+const addImageToItem = name => {
+  if (name === 'Nalot') return nalot;
+  if (name === 'Dodatkowy ruch') return dodatkowyRuch;
+  if (name === 'dodatkowe życie') return dodatkoweZycie;
+  if (name === 'Przemieszczenie statku') return przemieszczenieStatku;
+  if (name === 'Bomba') return bomba;
+  if (name === 'Skan') return skan;
+
+  return nalot;
+};
 class Shop extends Component {
   constructor() {
     super();
@@ -200,19 +218,22 @@ class Shop extends Component {
       <Container>
         <Header>SKLEP</Header>
         <ContentWrapper>
-          {items?.map(({ name, price, description }) => (
-            <Content key={description}>
-              <ItemImage data-tip={`${description}`} img={A} />
-              <ItemName data-tip={`${description}`}>{name}</ItemName>
-              <ItemPrice>{price}</ItemPrice>
-              <ItemButton
-                onClick={() => this.addItem(name, price, description)}
-              >
-                Kup teraz
-              </ItemButton>
-              <ReactTooltipStyled />
-            </Content>
-          ))}
+          {items?.map(({ name, price, description }) => {
+            const img = addImageToItem(name);
+            return (
+              <Content key={description}>
+                <ItemImage data-tip={`${description}`} img={img} />
+                <ItemName data-tip={`${description}`}>{name}</ItemName>
+                <ItemPrice>{price}</ItemPrice>
+                <ItemButton
+                  onClick={() => this.addItem(name, price, description)}
+                >
+                  Kup teraz
+                </ItemButton>
+                <ReactTooltipStyled />
+              </Content>
+            );
+          })}
           <BuyButton onClick={this.openModal}>Kup zetony</BuyButton>
         </ContentWrapper>
         <PaymentModal

@@ -1,7 +1,7 @@
 const colors = {
   primaryBackground: '#081D37',
   primaryBackgroundTransparent: 'rgba(8, 29, 55, 0.7)',
-  secondaryBackground: '#081D37',
+  secondaryBackground: '#0b4e42',
   background: '#0c294e',
   button: '#081D50',
   white: '#f2f2f2',

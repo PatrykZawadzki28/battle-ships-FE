@@ -1,15 +1,19 @@
+// export const env = `http://localhost:8081`;
+export const env = `http://appunites-mac-112.local:8081`;
+
 const url = {
   headers: { 'content-type': 'application/json' },
   post: {
-    REGISTER: 'http://localhost:8081/players/register',
-    LOGIN: 'http://localhost:8081/players/login',
-    ADD_STATS: 'http://localhost:8081/players/stats',
-    ADD_COINS: 'http://localhost:8081/store/coins',
-    ADD_ITEM: 'http://localhost:8081/store/item',
+    REGISTER: `${env}/players/register`,
+    LOGIN: `${env}/players/login`,
+    ADD_STATS: `${env}/players/stats`,
+    ADD_COINS: `${env}/store/coins`,
+    ADD_ITEM: `${env}/store/item`,
   },
   get: {
-    GET_PLAYER_DATA: 'http://localhost:8081/players/me',
-    GET_ALL_ITEMS: 'http://localhost:8081/store/item',
+    GET_PLAYER_DATA: `${env}/players/me`,
+    GET_STATS: `${env}/players/stats`,
+    GET_ALL_ITEMS: `${env}/store/item`,
   },
 };
 

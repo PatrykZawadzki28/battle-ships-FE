@@ -24,9 +24,10 @@ const StatsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 40rem;
+  min-width: 40rem;
   background: ${colors.secondaryBackground};
   padding: 1rem;
+  margin-bottom: 0.5rem;
   box-shadow: ${shadow.default};
 `;
 
@@ -46,6 +47,7 @@ const StatsDictionary = {
   lastGameMisses: 'pudła z ostatniej gry',
   itemsUsed: 'uzycia przedmiotów',
   accuracy: 'celność z ostatniej gry',
+  points: 'punkty',
 };
 
 const Statistics = ({ items }) => {

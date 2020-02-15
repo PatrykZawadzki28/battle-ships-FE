@@ -3,6 +3,7 @@ import { colors, shadow } from '../variables/styles';
 
 export const GameContainer = styled.div`
   padding: 4rem;
+  background: ${colors.background};
 `;
 
 export const Title = styled.h2`
@@ -43,6 +44,7 @@ export const BtnRotate = styled.button`
   margin-top: 1rem;
   padding: 1.2rem 1.6rem;
   font-size: 1.6rem;
+  background: ${colors.secondaryBackground};
 `;
 
 export const Position = styled.div`

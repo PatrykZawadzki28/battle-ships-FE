@@ -6,8 +6,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import Game from '../Game/Game';
-import url from '../../constants/connection';
-
+import url, { env } from '../../constants/connection';
 import {
   setAuthorization,
   setAuthToken,
@@ -17,8 +16,7 @@ import {
 } from '../../store/actions';
 import { colors, shadow } from '../../variables/styles';
 
-const endpoint = 'http://localhost:8081';
-const socket = socketIOClient(endpoint);
+const socket = socketIOClient(env);
 
 const SharedNavigationCss = `
 	display: flex;
@@ -110,14 +108,15 @@ const Footer = styled.div`
 `;
 
 class Layout extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       room: '',
-      gameStatus: 2,
+      gameStatus: 0,
       hits: 0,
       misses: 0,
       itemsUsed: 0,
+      points: this.props.userData.statistics.points || 0,
     };
   }
 
@@ -148,13 +147,15 @@ class Layout extends Component {
   };
 
   saveUserStatistics = async matchResult => {
-    const { hits, misses, itemsUsed, gameStatus } = this.state;
+    const { hits, misses, points, itemsUsed, gameStatus } = this.state;
     const { token } = this.props;
 
+    console.log(hits, misses, itemsUsed);
     let body = {
       lastGameHits: hits + 900,
       lastGameMisses: misses + 90,
       itemsUsed: itemsUsed + 31,
+      points: points - 10,
     };
 
     if (gameStatus === 3 || gameStatus === 1) {
@@ -172,6 +173,7 @@ class Layout extends Component {
       }
     }
   };
+
   render() {
     const { room, gameStatus } = this.state;
     const { children, userData } = this.props;
@@ -181,8 +183,9 @@ class Layout extends Component {
     }
 
     if (gameStatus === 3) {
-      // this.saveUserStatistics('win');
+      this.saveUserStatistics('win');
     }
+
     return (
       <MainWrapper>
         <Container>
