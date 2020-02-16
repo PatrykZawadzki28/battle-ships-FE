@@ -116,7 +116,7 @@ class Layout extends Component {
       hits: 0,
       misses: 0,
       itemsUsed: 0,
-      points: this.props.userData.statistics.points || 0,
+      points: props.userData?.statistics?.points || 0,
     };
   }
 
@@ -151,10 +151,10 @@ class Layout extends Component {
     const { token } = this.props;
 
     let body = {
-      lastGameHits: hits + 900,
-      lastGameMisses: misses + 90,
-      itemsUsed: itemsUsed + 31,
-      points: points - 10,
+      lastGameHits: hits + 20,
+      lastGameMisses: misses + 10,
+      itemsUsed: itemsUsed + 1,
+      points: matchResult === 'win' ? points + 10 : points - 10,
     };
 
     if (gameStatus === 3 || gameStatus === 1) {

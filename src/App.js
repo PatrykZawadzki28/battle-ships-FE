@@ -38,6 +38,7 @@ class App extends Component {
                 <PrivateRoute path={`${url}/sklep`} component={Shop} />
                 <PrivateRoute path={`${url}/ranking`} component={Ranking} />
               </Layout>
+              <PrivateRoute path="*" component={Profile} />
             </Switch>
           </Container>
         </Router>
