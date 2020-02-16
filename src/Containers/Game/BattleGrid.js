@@ -49,7 +49,7 @@ class BattleGrid extends Component {
     }
 
     if (player !== activePlayer) {
-      console.log("It's not your turn!");
+      console.log('To nie jest twoja tura!');
       return;
     }
 
@@ -108,7 +108,7 @@ class BattleGrid extends Component {
       <GridContainer>
         <Title>{player}</Title>
         <Grid onMouseLeave={this.handleExit}>{this.renderSquares()}</Grid>
-        <Position>Active Spot: {this.state.activeSpot}</Position>
+        <Position>Aktywna pozycja: {this.state.activeSpot}</Position>
       </GridContainer>
     );
   }

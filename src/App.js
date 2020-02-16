@@ -12,7 +12,6 @@ import { colors } from './variables/styles';
 import PrivateRoute from './routes/privateRoute';
 
 import Profile from './Components/Profile/Profile';
-import Dashboard from './Components/Dashboard/Dashboard';
 import Layout from './Containers/Layout/Layout';
 import Login from './Containers/Auth/Login';
 import Register from './Containers/Auth/Register';

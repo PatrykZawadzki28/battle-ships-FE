@@ -1,5 +1,5 @@
-// export const env = `http://localhost:8081`;
-export const env = `http://appunites-mac-112.local:8081`;
+export const env = `http://localhost:8081`;
+// export const env = `http://appunites-mac-112.local:8081`;
 
 const url = {
   headers: { 'content-type': 'application/json' },

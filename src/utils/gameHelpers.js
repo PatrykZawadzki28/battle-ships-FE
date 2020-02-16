@@ -73,11 +73,11 @@ const createPlayer = () => {
 };
 
 const welcomeMessage = {
-  turn: 'Welcome to battleship!',
+  turn: 'Witaj w Battleships!',
   messages: [
-    'Players first choose the positions that they would like their battleships to be on the Ship grids below. Once the second player has chosen ship positions, players have a few seconds to head up to the battle grids to fight.',
-    'The Battle Grid identifies a miss with gray, a hit with light green, and a sunken ship with dark green. You can not hit the same spot twice.',
-    "Once a player sinks all of the opponent's ships, the game is over!",
+    'Gracze najpierw wybierają pozycję swoich statków. Kiedy wszyscy gracze wybiorą pozycję mają pare sekund, aby przygotować się na bitwę',
+    'Gdy gracz nie trafi w statek pole staje się koloru szarego. Gdy trafi pole jest koloru zielonego. Natomiast, gdy gracz zatopi statek, wtedy jest koloru ciemno zielonego. Nie mozna trafic tego samego pola wiele razy',
+    'Jezeli graczowi uda się zatopić wszystkie statki przeciwnika to wygrywał grę!',
   ],
 };
 

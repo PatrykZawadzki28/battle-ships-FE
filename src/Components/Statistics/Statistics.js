@@ -37,7 +37,7 @@ const Stats = styled.div`
 `;
 
 const StatsDictionary = {
-  gamesPlayed: 'rozegranye gry',
+  gamesPlayed: 'rozegrane gry',
   wins: 'wygrane',
   loses: 'przegrane',
   hits: 'trafienia',
@@ -45,13 +45,12 @@ const StatsDictionary = {
   totalAccuracy: 'celność',
   lastGameHits: 'trafienia z ostatniej gry',
   lastGameMisses: 'pudła z ostatniej gry',
-  itemsUsed: 'uzycia przedmiotów',
   accuracy: 'celność z ostatniej gry',
+  itemsUsed: 'uzycia przedmiotów',
   points: 'punkty',
 };
 
 const Statistics = ({ items }) => {
-  console.log(items);
   return (
     <Container>
       <Header>Statystyki</Header>

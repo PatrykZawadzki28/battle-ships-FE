@@ -11,13 +11,13 @@ import {
 const GameLog = props => {
   const renderTurn = () => {
     if (!props.allShipsSet) {
-      return 'Place your ships...';
+      return 'Umieść swoje statki...';
     } else if (props.gameStarting) {
-      return 'Game starting...';
+      return 'Gra rozpoczyna się...';
     } else if (props.gameOver) {
-      return `${props.winner} wins!!`;
+      return `${props.winner} wygrywa!!`;
     }
-    return `${props.activePlayer}'s turn`;
+    return `tura gracza ${props.activePlayer}`;
   };
 
   return (

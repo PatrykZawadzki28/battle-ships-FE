@@ -53,7 +53,6 @@ class Game extends Component {
 
   shipReducer = (action, { updatedShips, player }) => {
     const { currentShip } = this.state[player];
-    const { userData } = this.props;
 
     if (action === 'SET_PLAYER_ONE') {
       this.setState({
@@ -63,11 +62,6 @@ class Game extends Component {
           shipsSet: true,
         },
         activePlayer: 'player2',
-      });
-
-      this.socket.emit('onInitPlayer', {
-        shipsGrid: this.state.player1.shipsGrid,
-        id: userData._id,
       });
     }
 

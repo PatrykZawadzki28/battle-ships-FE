@@ -36,7 +36,7 @@ const Profil = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
-  width: 50%;
+  width: 85%;
   margin-bottom: 0.5rem;
   box-shadow: ${shadow.default};
   background: ${colors.secondaryBackground};
@@ -70,8 +70,6 @@ class Ranking extends Component {
         },
       });
 
-      console.log(response.data);
-
       this.setState({ players: response.data });
     } catch (error) {
       console.log(error.response);
@@ -79,7 +77,7 @@ class Ranking extends Component {
   };
 
   async componentDidMount() {
-    const { token, userData } = this.props;
+    const { token } = this.props;
 
     await this.getAllPlayersStats(token);
   }

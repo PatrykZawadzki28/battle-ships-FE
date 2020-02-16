@@ -150,7 +150,6 @@ class Layout extends Component {
     const { hits, misses, points, itemsUsed, gameStatus } = this.state;
     const { token } = this.props;
 
-    console.log(hits, misses, itemsUsed);
     let body = {
       lastGameHits: hits + 900,
       lastGameMisses: misses + 90,

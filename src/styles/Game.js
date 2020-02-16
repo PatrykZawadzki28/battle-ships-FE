@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, shadow } from '../variables/styles';
+import { colors } from '../variables/styles';
 
 export const GameContainer = styled.div`
   padding: 4rem;
@@ -49,4 +49,5 @@ export const BtnRotate = styled.button`
 
 export const Position = styled.div`
   margin: 1rem;
+  font-size: 2rem;
 `;
